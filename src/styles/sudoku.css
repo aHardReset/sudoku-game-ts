@@ -27,6 +27,16 @@
     color: aliceblue;
 }
 
+.cell-blocked-by-backtracking{
+    background-color: slategray;
+    color: aliceblue;
+}
+
+.cell-blocked-by-solved-board{
+    background-color: green;
+    color: orange;
+}
+
 .cell-not-valid{
     background-color: red;
     color: aliceblue;
