@@ -1,84 +1,83 @@
 .sudoku {
-    text-align: center;
+  text-align: center;
 }
 
 .header {
-    background-color: #333;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    min-height: calc(100vh - 4rem);
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  min-height: calc(100vh - 4rem);
 }
 
 .cell-input {
-    width: 5vh;
-    height: 5vh;
-    font-size: 3vh;
-    text-align: center;
-    padding: 0;
-    border: 1px solid gray;
+  width: 5vh;
+  height: 5vh;
+  font-size: 3vh;
+  text-align: center;
+  padding: 0;
+  border: 1px solid gray;
 }
 
 .cell-blocked {
-    background-color: brown;
-    color: aliceblue;
+  background-color: brown;
+  color: aliceblue;
 }
 
-.cell-blocked-by-backtracking{
-    background-color: slategray;
-    color: aliceblue;
+.cell-blocked-by-backtracking {
+  background-color: slategray;
+  color: aliceblue;
 }
 
-.cell-blocked-by-solved-board{
-    background-color: green;
-    color: orange;
+.cell-blocked-by-solved-board {
+  background-color: green;
+  color: orange;
 }
 
-.cell-not-valid{
-    background-color: red;
-    color: aliceblue;
+.cell-not-valid {
+  background-color: red;
+  color: aliceblue;
 }
 
 table {
-    border-collapse: collapse;
-    border: 3px solid bisque;
+  border-collapse: collapse;
+  border: 3px solid bisque;
 }
 
 td {
-    padding: 0;
+  padding: 0;
 }
 
 input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button
-{
-    -webkit-appearance: none;
-    margin: 0;
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-input[type=number]
-{
-    -moz-appearance: textfield;
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .button-container {
-    margin-top: 2vh;
+  margin-top: 2vh;
 }
 
 .controls-button {
-    background-color: aqua;
-    font-weight: bold;
-    padding: 3vh 4vh;
-    border: none;
-    border-radius: 20px;
-    font-size: 2vh;
+  background-color: aqua;
+  font-weight: bold;
+  padding: 3vh 4vh;
+  border: none;
+  border-radius: 20px;
+  font-size: 2vh;
 }
 
 .bBorder {
-    border-bottom: 2px solid black;
+  border-bottom: 2px solid black;
 }
 
-.rBorder{
-    border-right: 2px solid black;
+.rBorder {
+  border-right: 2px solid black;
 }
