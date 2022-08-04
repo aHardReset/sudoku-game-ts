@@ -43,13 +43,13 @@ function Sudoku() {
     }
   }
 
-  function isBlockedCell(row: number, col: number): boolean {
+  function isABlockedCell(row: number, col: number): boolean {
     return initBoard[row][col] !== emptyCellIdentifier;
   }
 
   function getClassCell(row: number, col: number): string {
     let classes = "cell-input";
-    if (isBlockedCell(row, col)) {
+    if (isABlockedCell(row, col)) {
       classes += " cell-blocked";
     } else if (
       currentBoard[row][col] !== emptyCellIdentifier &&
@@ -75,12 +75,13 @@ function Sudoku() {
 
   function* sudokuBacktracingSteps(steps: Step[]) {
     let currentStep = steps.shift();
+    let stepsBoard = getDeepCopy(initBoard);
     while (currentStep !== undefined) {
       const row: number = currentStep.row;
       const col: number = currentStep.col;
       const val: number = currentStep.val;
-      currentBoard[row][col] = val;
-      setCurrentBoard(getDeepCopy(currentBoard));
+      stepsBoard[row][col] = val;
+      setCurrentBoard(getDeepCopy(stepsBoard));
       yield;
       currentStep = steps.shift();
     }
@@ -96,7 +97,7 @@ function Sudoku() {
 
   async function solveBoard() {
     if (solveAutomaticallyRequest === false) {
-      setCurrentBoard(initBoard);
+      // setCurrentBoard(initBoard);
       setSolveAutomaticallyRequest(true);
       let solvedBoardSteps: Step[] = [];
       let solvedBoard = solve(initBoard, solvedBoardSteps);
@@ -134,7 +135,7 @@ function Sudoku() {
               }
               className={getClassCell(row, col)}
               disabled={
-                isBlockedCell(row, col) ||
+                isABlockedCell(row, col) ||
                 solveAutomaticallyRequest ||
                 isASolvedBoard(currentBoard)
               }
