@@ -15,7 +15,7 @@ function getDummyBoard (): number[][] {
     [9, -1, 7, 4, -1, -1, -1, -1, -1],
     [-1, 4, 5, -1, -1, -1, 2, -1, 9],
     [-1, -1, -1, -1, 3, -1, -1, 7, -1]
-  ];
+  ]
 }
 
 function shuffle (array: Array<number>) {
@@ -32,18 +32,23 @@ function shuffle (array: Array<number>) {
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
       array[currentIndex]
-    ];
+    ]
   }
 
   return array
 }
 
-function generateNewBoard (): number[][] {
+function generateNewBoard (difficulty?: number): number[][] {
   const base = 3
   const side = base * base
   const gameSpace = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   const emptiesByDifficulty = [26, 30, 35, 41]
-  const difficulty = 0
+  if (difficulty !== undefined) {
+    if (difficulty >= emptiesByDifficulty.length) {
+      difficulty = 0
+    }
+  }
+  difficulty = difficulty || 0
 
   const pattern = (row: number, col: number) =>
     (base * (row % base) + Math.floor(row / base) + col) % side
@@ -138,7 +143,7 @@ function isValid (
       }
     }
     return true
-  };
+  }
 
   const checkCol = (): boolean => {
     for (let idx = 0; idx < currentBoard.length; idx++) {
@@ -147,7 +152,7 @@ function isValid (
       }
     }
     return true
-  };
+  }
 
   const checkSquare = (): boolean => {
     const startIdxR: number = rowIdx - (rowIdx % 3)
@@ -165,7 +170,7 @@ function isValid (
       }
     }
     return true
-  };
+  }
 
   return checkRow() && checkCol() && checkSquare()
 }
@@ -246,5 +251,5 @@ export {
   findNextEmpty,
   isABlockedCell,
   getDummyBoard
-};
+}
 export type { Step }

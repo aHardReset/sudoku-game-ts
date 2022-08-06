@@ -65,6 +65,40 @@ input[type=number] {
   margin-top: 2vh;
 }
 
+.uiText {
+  font-size: 5vh;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.difficulty-button {
+  background-color: greenyellow;
+  min-width: 10vh;
+  font-weight: bold;
+  padding: 2vh 2vh;
+  border: none;
+  border-radius: 10px;
+  font-size: 2vh;
+  margin-left: 1vh;
+  opacity: 0.4;
+  transition: 0.3s;
+}
+
+.difficulty-button:hover {opacity: 1}
+.difficulty-button-selected {opacity: 1}
+
+.difficulty-button-medium {
+  background-color: orange;
+}
+
+.difficulty-button-hard {
+  background-color: red;
+}
+
+.difficulty-button-expert{
+  background-color: rebeccapurple;
+  color: aliceblue;
+}
+
 .controls-button {
   background-color: aqua;
   font-weight: bold;
