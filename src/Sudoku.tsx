@@ -1,158 +1,156 @@
-import "./styles/sudoku.css";
-import React, { useState, useRef } from "react";
+import './styles/sudoku.css'
+import React, { useState, useRef } from 'react'
 import {
   generateNewBoard,
   isValid,
   emptyCellIdentifier,
   solve,
   isASolvedBoard,
-} from "./engines/sudokuEngine";
+  isABlockedCell
+} from './engines/sudokuEngine'
 
-import type { Step } from "./engines/sudokuEngine";
+import type { Step } from './engines/sudokuEngine'
 
-const minAnimationSpeed = 1000;
-const maxAnimationSpeed = 50;
-const initBoard = generateNewBoard();
-function Sudoku() {
-  const [currentBoard, setCurrentBoard] = useState(getDeepCopy(initBoard));
-  const animationSpeed = useRef(
-    maxAnimationSpeed + Math.round((minAnimationSpeed - maxAnimationSpeed) / 2)
-  );
-  const [solveAutomaticallyRequest, setSolveAutomaticallyRequest] =
-    useState(false);
+const minAnimationSpeed = 1000
+const maxAnimationSpeed = 50
+const initBoard = generateNewBoard()
+function Sudoku () {
+  const [currentBoard, setCurrentBoard] = useState(getDeepCopy(initBoard))
+  const animationSpeed = useRef(maxAnimationSpeed + Math.round((minAnimationSpeed - maxAnimationSpeed) / 2))
+  const [solveAutomaticallyRequest, setSolveAutomaticallyRequest] = useState(false)
 
-  function getDeepCopy(arr: number[][]) {
-    return JSON.parse(JSON.stringify(arr));
+  function getDeepCopy (arr: number[][]) {
+    return JSON.parse(JSON.stringify(arr))
   }
 
-  function onInputChange(
+  function cellInputChange (
     e: React.ChangeEvent<HTMLInputElement>,
     row: number,
     col: number
   ) {
-    let val = parseInt(e.target.value) || emptyCellIdentifier;
-    let grid = getDeepCopy(currentBoard);
+    const val = parseInt(e.target.value) || emptyCellIdentifier
+    const grid = getDeepCopy(currentBoard)
 
-    let isValidValue = (val: number) => {
-      return val === -1 || (val >= 1 && val <= 9);
-    };
+    const isValidValue = (val: number) => {
+      return val === -1 || (val >= 1 && val <= 9)
+    }
 
     if (isValidValue(val)) {
-      grid[row][col] = val;
-      setCurrentBoard(grid);
+      grid[row][col] = val
+      setCurrentBoard(grid)
     }
   }
 
-  function isABlockedCell(row: number, col: number): boolean {
-    return initBoard[row][col] !== emptyCellIdentifier;
-  }
-
-  function getClassCell(row: number, col: number): string {
-    let classes = "cell-input";
-    if (isABlockedCell(row, col)) {
-      classes += " cell-blocked";
+  function getClassCell (row: number, col: number): string {
+    let classes = 'cell-input'
+    if (isABlockedCell(initBoard, row, col)) {
+      classes += ' cell-blocked'
     } else if (
       currentBoard[row][col] !== emptyCellIdentifier &&
       !isValid(getDeepCopy(currentBoard), currentBoard[row][col], row, col)
     ) {
-      classes += " cell-not-valid";
+      classes += ' cell-not-valid'
     } else if (isASolvedBoard(currentBoard)) {
-      classes += " cell-blocked-by-solved-board";
+      classes += ' cell-blocked-by-solved-board'
     } else if (solveAutomaticallyRequest) {
-      classes += " cell-blocked-by-backtracking";
+      classes += ' cell-blocked-by-backtracking'
     }
 
-    return classes;
+    return classes
   }
 
-  function resetBoard() {
-    setCurrentBoard(getDeepCopy(initBoard));
+  function resetBoard () {
+    setCurrentBoard(getDeepCopy(initBoard))
   }
 
-  function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  function sleep (ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
   }
 
-  function* sudokuBacktracingSteps(steps: Step[]) {
-    let currentStep = steps.shift();
-    let stepsBoard = getDeepCopy(initBoard);
+  function * sudokuBacktracingSteps (steps: Step[]) {
+    let currentStep = steps.shift()
+    const stepsBoard = getDeepCopy(initBoard)
     while (currentStep !== undefined) {
-      const row: number = currentStep.row;
-      const col: number = currentStep.col;
-      const val: number = currentStep.val;
-      stepsBoard[row][col] = val;
-      setCurrentBoard(getDeepCopy(stepsBoard));
-      yield;
-      currentStep = steps.shift();
+      const row: number = currentStep.row
+      const col: number = currentStep.col
+      const val: number = currentStep.val
+      stepsBoard[row][col] = val
+      setCurrentBoard(getDeepCopy(stepsBoard))
+      yield
+      currentStep = steps.shift()
     }
   }
 
-  async function sudokuBacktracingAnimation(solvedBoardSteps: Step[]) {
-    let solveGenerator = sudokuBacktracingSteps(solvedBoardSteps);
-    for (let _ of solveGenerator) {
-      await sleep(animationSpeed.current);
+  async function sudokuBacktracingAnimation (solvedBoardSteps: Step[]) {
+    const solveGenerator = sudokuBacktracingSteps(solvedBoardSteps)
+    while (true) {
+      const nextStep = solveGenerator.next()
+      if (nextStep.done) {
+        break
+      }
+      await sleep(animationSpeed.current)
     }
-    setSolveAutomaticallyRequest(false);
+    setSolveAutomaticallyRequest(false)
   }
 
-  async function solveBoard() {
+  async function solveBoard () {
     if (solveAutomaticallyRequest === false) {
       // setCurrentBoard(initBoard);
-      setSolveAutomaticallyRequest(true);
-      let solvedBoardSteps: Step[] = [];
-      let solvedBoard = solve(initBoard, solvedBoardSteps);
+      setSolveAutomaticallyRequest(true)
+      const solvedBoardSteps: Step[] = []
+      const solvedBoard = solve(initBoard, solvedBoardSteps)
       if (isASolvedBoard(solvedBoard)) {
-        sudokuBacktracingAnimation(solvedBoardSteps);
+        sudokuBacktracingAnimation(solvedBoardSteps)
       }
     }
   }
 
-  function changeAnimationSpeed(e: React.ChangeEvent<HTMLInputElement>) {
+  function changeAnimationSpeed (e: React.ChangeEvent<HTMLInputElement>) {
     const speedFactor =
       (minAnimationSpeed - maxAnimationSpeed) /
-      (parseInt(e.target.max) - parseInt(e.target.min));
-    const sliderInput = parseInt(e.target.value);
-    const newSpeed = Math.round(minAnimationSpeed - sliderInput * speedFactor);
-    animationSpeed.current = newSpeed;
+      (parseInt(e.target.max) - parseInt(e.target.min))
+    const sliderInput = parseInt(e.target.value)
+    const newSpeed = Math.round(minAnimationSpeed - sliderInput * speedFactor)
+    animationSpeed.current = newSpeed
   }
 
-  function newGame() {
-    window.location.reload();
+  function newGame () {
+    window.location.reload()
   }
 
   const board = [0, 1, 2, 3, 4, 5, 6, 7, 8].map((row, rIdx) => {
     return (
-      <tr key={rIdx} className={(row + 1) % 3 === 0 ? "bBorder" : ""}>
+      <tr key={rIdx} className={(row + 1) % 3 === 0 ? 'bBorder' : ''}>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((col, cIdx) => {
-          let cell = (
+          const cell = (
             <input
               type="number"
-              onChange={(e) => onInputChange(e, rIdx, cIdx)}
+              onChange={(e) => cellInputChange(e, rIdx, cIdx)}
               value={
                 currentBoard[row][col] !== emptyCellIdentifier
                   ? currentBoard[row][col]
-                  : ""
+                  : ''
               }
               className={getClassCell(row, col)}
               disabled={
-                isABlockedCell(row, col) ||
+                isABlockedCell(initBoard, row, col) ||
                 solveAutomaticallyRequest ||
                 isASolvedBoard(currentBoard)
               }
             />
-          );
+          )
           return (
             <td
               key={rIdx + cIdx}
-              className={(col + 1) % 3 === 0 ? "rBorder" : ""}
+              className={(col + 1) % 3 === 0 ? 'rBorder' : ''}
             >
               {cell}
             </td>
-          );
+          )
         })}
       </tr>
-    );
-  });
+    )
+  })
 
   return (
     <div className="sudoku">
@@ -163,23 +161,25 @@ function Sudoku() {
         </table>
 
         <div className="button-container">
-          {solveAutomaticallyRequest ? (
-            ""
-          ) : (
+          {solveAutomaticallyRequest
+            ? (
+                ''
+              )
+            : (
             <button
               className="controls-button"
               onClick={resetBoard}
-              style={{ backgroundColor: "tomato" }}
+              style={{ backgroundColor: 'tomato' }}
             >
               Reset
             </button>
-          )}
+              )}
           <button
             className="controls-button"
             onClick={solveBoard}
-            style={{ margin: "0 3vh" }}
+            style={{ margin: '0 3vh' }}
           >
-            {solveAutomaticallyRequest ? "Solving..." : "Solve"}
+            {solveAutomaticallyRequest ? 'Solving...' : 'Solve'}
           </button>
           <input
             className=""
@@ -192,14 +192,14 @@ function Sudoku() {
           <button
             className="controls-button"
             onClick={newGame}
-            style={{ backgroundColor: "greenyellow" }}
+            style={{ backgroundColor: 'greenyellow' }}
           >
             New Game
           </button>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Sudoku;
+export default Sudoku

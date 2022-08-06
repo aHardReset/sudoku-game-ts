@@ -1,6 +1,6 @@
-import "./styles/navbar.css";
+import './styles/navbar.css'
 
-function Navbar() {
+function Navbar () {
   return (
     // create a beautiful navbar
     <nav className="nav">
@@ -20,7 +20,7 @@ function Navbar() {
         </li>
       </ul>
     </nav>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar

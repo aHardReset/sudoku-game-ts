@@ -1,10 +1,10 @@
-const emptyCellIdentifier = -1;
+const emptyCellIdentifier = -1
 
-function copyObject(object: Object) {
-  return JSON.parse(JSON.stringify(object));
+function copyObject (object: Object) {
+  return JSON.parse(JSON.stringify(object))
 }
 
-function getDummyBoard(): number[][] {
+function getDummyBoard (): number[][] {
   return [
     [-1, 5, -1, 9, -1, -1, -1, -1, -1],
     [8, -1, -1, -1, 4, -1, 3, -1, 7],
@@ -14,94 +14,98 @@ function getDummyBoard(): number[][] {
     [1, -1, 9, 8, -1, 4, 6, 2, 3],
     [9, -1, 7, 4, -1, -1, -1, -1, -1],
     [-1, 4, 5, -1, -1, -1, 2, -1, 9],
-    [-1, -1, -1, -1, 3, -1, -1, 7, -1],
-  ];
+    [-1, -1, -1, -1, 3, -1, -1, 7, -1]
+  ]
 }
 
-function shuffle(array: Array<number>) {
-  let currentIndex = array.length,
-    randomIndex;
+function shuffle (array: Array<number>) {
+  let currentIndex = array.length; let randomIndex
 
   // While there remain elements to shuffle.
-  while (currentIndex != 0) {
+  while (currentIndex !== 0) {
     // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
+    randomIndex = Math.floor(Math.random() * currentIndex)
     currentIndex--;
 
     // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
-      array[currentIndex],
-    ];
+      array[currentIndex]
+    ]
   }
 
-  return array;
+  return array
 }
 
-function generateNewBoard(): number[][] {
-  const base = 3;
-  const side = base * base;
-  const gameSpace = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const emptiesByDifficulty = [26, 30, 35, 41];
-  const difficulty = 0;
+function generateNewBoard (): number[][] {
+  const base = 3
+  const side = base * base
+  const gameSpace = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  const emptiesByDifficulty = [26, 30, 35, 41]
+  const difficulty = 0
 
   const pattern = (row: number, col: number) =>
-    (base * (row % base) + Math.floor(row / base) + col) % side;
-  let rBase = [];
+    (base * (row % base) + Math.floor(row / base) + col) % side
+  const rBase = []
   for (let rBaseIdx = 0; rBaseIdx < base; rBaseIdx++) {
-    rBase.push(rBaseIdx);
+    rBase.push(rBaseIdx)
   }
 
-  let rBaseShuffle = shuffle(copyObject(rBase));
-  let rows = [];
+  let rBaseShuffle = shuffle(copyObject(rBase))
+  const rows = []
   for (let r = 0; r < rBaseShuffle.length; r++) {
-    let innerBaseShuffle = shuffle(copyObject(rBase));
+    const innerBaseShuffle = shuffle(copyObject(rBase))
     for (let g = 0; g < innerBaseShuffle.length; g++) {
-      rows.push(g * base + r);
+      rows.push(g * base + r)
     }
   }
 
-  rBaseShuffle = shuffle(copyObject(rBase));
-  let cols = [];
+  rBaseShuffle = shuffle(copyObject(rBase))
+  const cols = []
   for (let c = 0; c < rBaseShuffle.length; c++) {
-    let innerBaseShuffle = shuffle(copyObject(rBase));
+    const innerBaseShuffle = shuffle(copyObject(rBase))
     for (let g = 0; g < innerBaseShuffle.length; g++) {
-      cols.push(g * base + c);
+      cols.push(g * base + c)
     }
   }
 
-  let randomizeSpace = shuffle(gameSpace);
-  let board = [];
+  const randomizeSpace = shuffle(gameSpace)
+  const board = []
   for (let r = 0; r < rows.length; r++) {
-    let _row = [];
+    const _row = []
     for (let c = 0; c < cols.length; c++) {
-      _row.push(randomizeSpace[pattern(r, c)]);
+      _row.push(randomizeSpace[pattern(r, c)])
     }
-    board.push(_row);
+    board.push(_row)
   }
 
-  const squares = side * side;
-  let randomCells = [];
-  const empties = emptiesByDifficulty[difficulty];
+  const squares = side * side
+  let randomCells = []
+  const empties = emptiesByDifficulty[difficulty]
   for (let s = 0; s < squares; s++) {
-    randomCells.push(s);
+    randomCells.push(s)
   }
 
-  randomCells = shuffle(randomCells);
-  randomCells = randomCells.slice(0, empties);
+  randomCells = shuffle(randomCells)
+  randomCells = randomCells.slice(0, empties)
 
   for (let emptiesIdx = 0; emptiesIdx < randomCells.length; emptiesIdx++) {
     board[Math.floor(randomCells[emptiesIdx] / side)][
       randomCells[emptiesIdx] % side
-    ] = emptyCellIdentifier;
+    ] = emptyCellIdentifier
   }
   if (isAValidGame(board)) {
-    return board;
+    return board
   }
-  return generateNewBoard();
+  return generateNewBoard()
 }
 
-function isAValidGame(currentBoard: number[][]): boolean {
+function isABlockedCell (initBoard: number[][], row: number, col: number): boolean {
+  // check if the cell is part of a init input
+  return initBoard[row][col] !== emptyCellIdentifier
+}
+
+function isAValidGame (currentBoard: number[][]): boolean {
   // is a valid game === true when all the values in the current board are valid under sudoku rules
   for (let row = 0; row < currentBoard.length; row++) {
     for (let col = 0; col < currentBoard[0].length; col++) {
@@ -109,14 +113,14 @@ function isAValidGame(currentBoard: number[][]): boolean {
         currentBoard[row][col] !== -1 &&
         !isValid(currentBoard, currentBoard[row][col], row, col)
       ) {
-        return false;
+        return false
       }
     }
   }
-  return true;
+  return true
 }
 
-function isValid(
+function isValid (
   currentBoard: number[][],
   num: number,
   rowIdx: number,
@@ -125,24 +129,24 @@ function isValid(
   const checkRow = (): boolean => {
     for (let idx = 0; idx < currentBoard[0].length; idx++) {
       if (currentBoard[rowIdx][idx] === num && colIdx !== idx) {
-        return false;
+        return false
       }
     }
-    return true;
-  };
+    return true
+  }
 
   const checkCol = (): boolean => {
     for (let idx = 0; idx < currentBoard.length; idx++) {
       if (currentBoard[idx][colIdx] === num && rowIdx !== idx) {
-        return false;
+        return false
       }
     }
-    return true;
-  };
+    return true
+  }
 
   const checkSquare = (): boolean => {
-    const startIdxR: number = rowIdx - (rowIdx % 3);
-    const startIdxC: number = colIdx - (colIdx % 3);
+    const startIdxR: number = rowIdx - (rowIdx % 3)
+    const startIdxC: number = colIdx - (colIdx % 3)
 
     for (let idxR = 0; idxR < 3; idxR++) {
       for (let idxC = 0; idxC < 3; idxC++) {
@@ -151,26 +155,25 @@ function isValid(
           startIdxR + idxR !== rowIdx &&
           startIdxC + idxC !== colIdx
         ) {
-          return false;
+          return false
         }
       }
     }
-    return true;
-  };
+    return true
+  }
 
-  return checkRow() && checkCol() && checkSquare();
+  return checkRow() && checkCol() && checkSquare()
 }
 
-function findNextEmpty(currentBoard: number[][]): number[] {
-  let nextEmpty: Array<number> = [];
+function findNextEmpty (currentBoard: number[][]): number[] {
   for (let row = 0; row < currentBoard.length; row++) {
     for (let col = 0; col < currentBoard[0].length; col++) {
       if (currentBoard[row][col] === emptyCellIdentifier) {
-        return [row, col];
+        return [row, col]
       }
     }
   }
-  return [-1, -1];
+  return [-1, -1]
 }
 
 type Step = {
@@ -179,54 +182,54 @@ type Step = {
   val: number;
 };
 
-function solveHelper(currentBoard: number[][], stepsRecorder?: Step[]) {
-  let nextEmpty = findNextEmpty(currentBoard);
+function solveHelper (currentBoard: number[][], stepsRecorder?: Step[]) {
+  const nextEmpty = findNextEmpty(currentBoard)
   if (nextEmpty[0] === -1 && nextEmpty[1] === -1) {
-    return true;
+    return true
   }
 
-  const row = nextEmpty[0];
-  const col = nextEmpty[1];
+  const row = nextEmpty[0]
+  const col = nextEmpty[1]
 
   for (let guess = 1; guess <= 9; guess++) {
     if (stepsRecorder !== undefined) {
-      let step: Step = { row: row, col: col, val: guess };
-      stepsRecorder.push(step);
+      const step: Step = { row, col, val: guess }
+      stepsRecorder.push(step)
     }
     if (isValid(currentBoard, guess, row, col)) {
-      currentBoard[row][col] = guess;
+      currentBoard[row][col] = guess
       if (solveHelper(currentBoard, stepsRecorder) === true) {
-        return true;
+        return true
       }
-      currentBoard[row][col] = emptyCellIdentifier;
+      currentBoard[row][col] = emptyCellIdentifier
     }
   }
   if (stepsRecorder !== undefined) {
-    let step: Step = { row: row, col: col, val: emptyCellIdentifier };
-    stepsRecorder.push(step);
+    const step: Step = { row, col, val: emptyCellIdentifier }
+    stepsRecorder.push(step)
   }
-  return false;
+  return false
 }
 
-function isASolvedBoard(board: number[][]): boolean {
+function isASolvedBoard (board: number[][]): boolean {
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board[0].length; col++) {
       if (
         board[row][col] === -1 ||
         !isValid(board, board[row][col], row, col)
       ) {
-        return false;
+        return false
       }
     }
   }
 
-  return true;
+  return true
 }
 
-function solve(initBoard: number[][], stepsRecorder?: Step[]) {
-  let solvedBoard = JSON.parse(JSON.stringify(initBoard));
-  solveHelper(solvedBoard, stepsRecorder);
-  return solvedBoard;
+function solve (initBoard: number[][], stepsRecorder?: Step[]) {
+  const solvedBoard = JSON.parse(JSON.stringify(initBoard))
+  solveHelper(solvedBoard, stepsRecorder)
+  return solvedBoard
 }
 
 export {
@@ -236,5 +239,7 @@ export {
   solve,
   isASolvedBoard,
   findNextEmpty,
-};
-export type { Step };
+  isABlockedCell,
+  getDummyBoard
+}
+export type { Step }
