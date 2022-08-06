@@ -1,4 +1,5 @@
 import './styles/navbar.css'
+import linkedIn from './assets/linkedin.svg'
 
 function Navbar () {
   return (
@@ -9,8 +10,13 @@ function Navbar () {
       </a>
       <ul>
         <li>
-          <a className="nav-link" href="/">
-            Link A
+          <a href="#">
+            {"Let's get in touch ->"}
+          </a>
+        </li>
+        <li>
+          <a href="https://linkedin.com/in/AaronGaribay" target="_blank" rel='noreferrer'>
+            <img src={linkedIn} className="logo linkedin" alt="LinkedIn Logo" />
           </a>
         </li>
         <li>
