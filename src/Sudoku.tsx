@@ -23,11 +23,7 @@ function Sudoku () {
     return JSON.parse(JSON.stringify(arr))
   }
 
-  function cellInputChange (
-    e: React.ChangeEvent<HTMLInputElement>,
-    row: number,
-    col: number
-  ) {
+  function cellInputChange (e: React.ChangeEvent<HTMLInputElement>, row: number, col: number) {
     const val = parseInt(e.target.value) || emptyCellIdentifier
     const grid = getDeepCopy(currentBoard)
 
@@ -106,9 +102,7 @@ function Sudoku () {
   }
 
   function changeAnimationSpeed (e: React.ChangeEvent<HTMLInputElement>) {
-    const speedFactor =
-      (minAnimationSpeed - maxAnimationSpeed) /
-      (parseInt(e.target.max) - parseInt(e.target.min))
+    const speedFactor = (minAnimationSpeed - maxAnimationSpeed) / (parseInt(e.target.max) - parseInt(e.target.min))
     const sliderInput = parseInt(e.target.value)
     const newSpeed = Math.round(minAnimationSpeed - sliderInput * speedFactor)
     animationSpeed.current = newSpeed
@@ -126,24 +120,15 @@ function Sudoku () {
             <input
               type="number"
               onChange={(e) => cellInputChange(e, rIdx, cIdx)}
-              value={
-                currentBoard[row][col] !== emptyCellIdentifier
-                  ? currentBoard[row][col]
-                  : ''
-              }
+              value={currentBoard[row][col] !== emptyCellIdentifier ? currentBoard[row][col] : ''}
               className={getClassCell(row, col)}
               disabled={
-                isABlockedCell(initBoard, row, col) ||
-                solveAutomaticallyRequest ||
-                isASolvedBoard(currentBoard)
+                isABlockedCell(initBoard, row, col) || solveAutomaticallyRequest || isASolvedBoard(currentBoard)
               }
             />
           )
           return (
-            <td
-              key={rIdx + cIdx}
-              className={(col + 1) % 3 === 0 ? 'rBorder' : ''}
-            >
+            <td key={rIdx + cIdx} className={(col + 1) % 3 === 0 ? 'rBorder' : ''}>
               {cell}
             </td>
           )
@@ -166,34 +151,15 @@ function Sudoku () {
                 ''
               )
             : (
-            <button
-              className="controls-button"
-              onClick={resetBoard}
-              style={{ backgroundColor: 'tomato' }}
-            >
+            <button className="controls-button" onClick={resetBoard} style={{ backgroundColor: 'tomato' }}>
               Reset
             </button>
               )}
-          <button
-            className="controls-button"
-            onClick={solveBoard}
-            style={{ margin: '0 3vh' }}
-          >
+          <button className="controls-button" onClick={solveBoard} style={{ margin: '0 3vh' }}>
             {solveAutomaticallyRequest ? 'Solving...' : 'Solve'}
           </button>
-          <input
-            className=""
-            onChange={changeAnimationSpeed}
-            type="range"
-            min="0"
-            max="100"
-            id="speedSlider"
-          />
-          <button
-            className="controls-button"
-            onClick={newGame}
-            style={{ backgroundColor: 'greenyellow' }}
-          >
+          <input className="" onChange={changeAnimationSpeed} type="range" min="0" max="100" id="speedSlider" />
+          <button className="controls-button" onClick={newGame} style={{ backgroundColor: 'greenyellow' }}>
             New Game
           </button>
         </div>

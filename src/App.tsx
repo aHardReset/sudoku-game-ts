@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
-function App() {
-
+function App () {
   return (
     <section>hello</section>
   )

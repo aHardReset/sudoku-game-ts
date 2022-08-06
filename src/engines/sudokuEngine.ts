@@ -15,11 +15,12 @@ function getDummyBoard (): number[][] {
     [9, -1, 7, 4, -1, -1, -1, -1, -1],
     [-1, 4, 5, -1, -1, -1, 2, -1, 9],
     [-1, -1, -1, -1, 3, -1, -1, 7, -1]
-  ]
+  ];
 }
 
 function shuffle (array: Array<number>) {
-  let currentIndex = array.length; let randomIndex
+  let currentIndex = array.length
+  let randomIndex
 
   // While there remain elements to shuffle.
   while (currentIndex !== 0) {
@@ -31,7 +32,7 @@ function shuffle (array: Array<number>) {
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
       array[currentIndex]
-    ]
+    ];
   }
 
   return array
@@ -100,7 +101,11 @@ function generateNewBoard (): number[][] {
   return generateNewBoard()
 }
 
-function isABlockedCell (initBoard: number[][], row: number, col: number): boolean {
+function isABlockedCell (
+  initBoard: number[][],
+  row: number,
+  col: number
+): boolean {
   // check if the cell is part of a init input
   return initBoard[row][col] !== emptyCellIdentifier
 }
@@ -133,7 +138,7 @@ function isValid (
       }
     }
     return true
-  }
+  };
 
   const checkCol = (): boolean => {
     for (let idx = 0; idx < currentBoard.length; idx++) {
@@ -142,7 +147,7 @@ function isValid (
       }
     }
     return true
-  }
+  };
 
   const checkSquare = (): boolean => {
     const startIdxR: number = rowIdx - (rowIdx % 3)
@@ -160,7 +165,7 @@ function isValid (
       }
     }
     return true
-  }
+  };
 
   return checkRow() && checkCol() && checkSquare()
 }
@@ -241,5 +246,5 @@ export {
   findNextEmpty,
   isABlockedCell,
   getDummyBoard
-}
+};
 export type { Step }
