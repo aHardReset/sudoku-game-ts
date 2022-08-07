@@ -10,18 +10,8 @@ function Navbar () {
       </a>
       <ul>
         <li>
-          <a href="#">
-            {"Let's get in touch ->"}
-          </a>
-        </li>
-        <li>
           <a href="https://linkedin.com/in/AaronGaribay" target="_blank" rel='noreferrer'>
             <LinkedInIcon className='navbar-icon linkedin-icon' />
-          </a>
-        </li>
-        <li>
-          <a className="nav-link" href="/">
-            Link B
           </a>
         </li>
       </ul>

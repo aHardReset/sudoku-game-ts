@@ -372,7 +372,6 @@ function Sudoku () {
   }
 
   function onSolvedState (): ReactElement[] {
-    console.log(solveResults)
     const elements = []
     const boardTitleElements = []
     if (solveResults.wasSolvedAutomatically) {
