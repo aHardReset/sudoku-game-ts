@@ -1,5 +1,5 @@
 import './styles/navbar.css'
-import linkedIn from './assets/linkedin.svg'
+import LinkedInIcon from './assets/linkedin'
 
 function Navbar () {
   return (
@@ -16,7 +16,7 @@ function Navbar () {
         </li>
         <li>
           <a href="https://linkedin.com/in/AaronGaribay" target="_blank" rel='noreferrer'>
-            <img src={linkedIn} className="logo linkedin" alt="LinkedIn Logo" />
+            <LinkedInIcon className='navbar-icon linkedin-icon' />
           </a>
         </li>
         <li>
