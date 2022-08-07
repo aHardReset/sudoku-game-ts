@@ -11,7 +11,7 @@
 }
 
 .site-title {
-    font-size: 2rem;
+    font-size: 5vh;
 }
 
 .nav ul {
@@ -37,16 +37,18 @@
 
 .nav li:hover{
     background-color: #777;
+    filter: drop-shadow(0 0 2em white);
 }
 
-.logo {
-    height: 6em;
-    padding: 1.5em;
+.navbar-icon {
+    height: 5vh;
+    width: 5vh;
+    padding: 0vh;
+    display: flex;
+    align-items: center;
     will-change: filter;
 }
-.logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.linkedin:hover {
-    filter: drop-shadow(0 0 2em #61dafbaa);
+
+.linkedin-icon {
+    fill: rgb(9, 97, 184);
 }
