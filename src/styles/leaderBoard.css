@@ -1,0 +1,77 @@
+.leader-board {
+  max-width: 25rem;
+  margin: 5rem auto;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 16px 1px #aaa;
+  font-family: sans-serif;
+}
+
+.leader-board-header {
+  background-color: #ff7500;
+  color: white;
+  text-transform: uppercase;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  height: 10rem;
+  position: relative;
+}
+
+.leader-board-header-text {
+  font-size: 3rem;
+  line-height: 3rem;
+  position: relative;
+  margin-left: 3rem;
+  top: 4rem;
+}
+
+.leader-board-table {
+  background-color: #16181e;
+  color: #999;
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  overflow: hidden;
+}
+
+.leader-board-thead {
+  font-size: 0.7rem;
+  color: #555;
+  text-transform: uppercase;
+}
+
+.nickname-thead {
+  text-align: left;
+}
+
+.leader-board-tbody .nickname-thead {
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.position-thead,
+.time-thead {
+  text-align: right;
+}
+
+.leader-board-tbody .leader-board-th:nth-child(2n) {
+  background-color: #1f232c;
+}
+
+.position-thead {
+  width: 4ch;
+  padding-left: 1rem;
+}
+
+.time-thead {
+  width: 8ch;
+}
+
+.leader-board-th {
+  padding: 1.5rem 1rem 0.5rem;
+}
+
+.leader-board-td {
+  padding: 1rem 1rem;
+}
