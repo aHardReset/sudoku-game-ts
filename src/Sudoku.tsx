@@ -10,6 +10,9 @@ import {
 } from './engines/sudokuEngine'
 import StopwatchIcon from './assets/stopwatch-fill'
 import RobotIcon from './assets/robot'
+import ReplyFill from './assets/replyFill'
+import TrashFill from './assets/trashFill'
+import InfoCircleFill from './assets/infoCircleFill'
 import type { Step } from './engines/sudokuEngine'
 
 const minAnimationSpeed = 1000
@@ -72,45 +75,28 @@ function Sudoku () {
     setCurrentBoard(getObjectCopy(solveResults.initBoard))
   }
 
-  function onLoadingState (): ReactElement[] {
-    const loadingAnimation = () => {
-      return (
-        <div className="loading">
-          <div className="loading-text">Loading...</div>
-        </div>
-      )
-    }
-
-    const elements = []
-    elements.push(loadingAnimation())
-    return elements
+  type LoadingProps = {
+    text: string,
   }
 
-  function uiButtonsContainer (buttonsToDisplay: ReactElement[]): ReactElement {
+  function LoadingElement (props: LoadingProps) {
     return (
-    <div className="button-container">
-      {buttonsToDisplay}
-    </div>
+      <div className="loading-grid">
+        <div className="loading-text">{props.text}</div>
+      </div>
     )
   }
 
-  function NewGameButton (): ReactElement {
-    const newGame = () => {
-      window.location.reload()
-    }
+  function onLoadingState (): ReactElement {
     return (
-      <button className="controls-button" onClick={newGame} style={{ backgroundColor: 'greenyellow' }}>
-        New Game!
-      </button>
+      <div>
+        <LoadingElement text="Loading..." />
+      </div>
     )
   }
 
-  function ResetButton (): ReactElement {
-    return (
-      <button className="controls-button" onClick={resetBoard} style={{ backgroundColor: 'tomato' }}>
-        Reset
-      </button>
-    )
+  const newGame = () => {
+    window.location.reload()
   }
 
   function Board () {
@@ -158,14 +144,6 @@ function Sudoku () {
     )
   }
 
-  function BoardTitle (elements: ReactElement[]): ReactElement {
-    return (
-      <div className='board-title'>
-        {elements}
-      </div>
-    )
-  }
-
   function RobotIconElement (): ReactElement {
     return (
       <RobotIcon className='icon robot-icon' />
@@ -178,13 +156,25 @@ function Sudoku () {
     )
   }
 
-  function TimerText () {
+  function ReplyFillElement (): ReactElement {
     return (
-      <div className='board-title-text timer-text'>{timer.timerText}</div>
+      <ReplyFill className='icon reply-fill-icon' />
     )
   }
 
-  function onConfigurationState (): ReactElement[] {
+  function TrashFillElement (): ReactElement {
+    return (
+      <TrashFill className='icon trash-fill-icon' />
+    )
+  }
+
+  function InfoCircleFillElement (): ReactElement {
+    return (
+      <InfoCircleFill className='icon info-circle-fill-icon' />
+    )
+  }
+
+  function onConfigurationState (): ReactElement {
     const goToOnGameState = () => {
       const newBoard = generateNewBoard(solveResults.difficulty)
       setSolveResults({ wasSolvedAutomatically: false, milliseconds: 0, endBoard: [[]], initBoard: newBoard, difficulty: solveResults.difficulty })
@@ -227,7 +217,7 @@ function Sudoku () {
     const difficultiesButtons = () => {
       return (
         <div>
-          <h2 className='uiText'>Select Difficulty</h2>
+          <h2 className='select-difficulty-text'>{'Select Difficulty'}</h2>
           {difficulties}
         </div>
       )
@@ -241,42 +231,46 @@ function Sudoku () {
       )
     }
 
-    const elements = []
-    elements.push(difficultiesButtons())
-    elements.push(startGameButton())
-    return elements
+    return (
+      <div className="sudoku-screen">
+        <div className="sudoku-nav">
+          <h3 className='sudoku-nav-text'>
+            {'Sudoku   '}
+            <div className='help'>
+              {InfoCircleFillElement()}
+              <span className="help-no-visible help-game-rules">
+                {'Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions'}
+                <br/>
+                {' Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions'}
+                <br/>
+                {'Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions'}
+
+              </span>
+            </div>
+          </h3>
+        </div>
+        <div className="sudoku-main-grid sudoku-configuration">
+          <div className='sudoku-blank-side-col'></div>
+          <div className='sudoku-board'>
+            {difficultiesButtons()}
+            {startGameButton()}
+          </div>
+          <div className='sudoku-blank-side-col'></div>
+        </div>
+      </div>
+    )
   }
 
-  function onGameState (): ReactElement[] {
-    const uiTimer = () => {
-      const elements = []
-      elements.push(StopwatchIconElement())
-      elements.push(TimerText())
-      return (
-        BoardTitle(elements)
-      )
-    }
-    const OnGameButtons = () => {
-      const goToAutomaticallySolveState = () => {
-        setStateMachine({ current: 'automaticallySolve', previous: stateMachine.current })
-        solveResults.wasSolvedAutomatically = true
-        solveResults.milliseconds = 0
-        solveResults.endBoard = [[]]
-        const currentTime = new Date().getTime()
-        setTimer({ startTime: currentTime, endTime: 0, timerText: '00:00' })
-        setSolveResults(getObjectCopy(solveResults))
-        solveBoard()
-      }
-      const SolveAutomaticallyButton = () => {
-        return (
-          <button className="controls-button" onClick={goToAutomaticallySolveState} style={{ margin: '0 3vh' }}>
-            {'Solve Automatically'}
-          </button>
-        )
-      }
-      return (
-        uiButtonsContainer([ResetButton(), SolveAutomaticallyButton(), NewGameButton()])
-      )
+  function onGameState (): ReactElement {
+    const goToAutomaticallySolveState = () => {
+      setStateMachine({ current: 'automaticallySolve', previous: stateMachine.current })
+      solveResults.wasSolvedAutomatically = true
+      solveResults.milliseconds = 0
+      solveResults.endBoard = [[]]
+      const currentTime = new Date().getTime()
+      setTimer({ startTime: currentTime, endTime: 0, timerText: '00:00' })
+      setSolveResults(getObjectCopy(solveResults))
+      solveBoard()
     }
     if (isASolvedBoard(currentBoard)) {
       const currentTime = new Date().getTime()
@@ -286,12 +280,71 @@ function Sudoku () {
       goToSolvedState()
     }
 
-    const elements = []
-    elements.push(uiTimer())
-    elements.push(Board())
-    elements.push(OnGameButtons())
+    return (
+      <div className="sudoku-screen">
+        <div className="sudoku-nav">
+          <h3 className='sudoku-nav-text'>
+            {'Sudoku   '}
+            <div className='help'>
+              {InfoCircleFillElement()}
+              <span className="help-no-visible help-game-rules">
+                {'Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions'}
+                <br/>
+                {' Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions'}
+                <br/>
+                {'Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions'}
 
-    return elements
+              </span>
+            </div>
+          </h3>
+        </div>
+        <div className="sudoku-top-grid">
+          <div className='sudoku-blank-side-col'></div>
+          <div className='sudoku-timer-item'>
+            <div className='sudoku-timer-icon'>
+              {StopwatchIconElement()}
+            </div>
+            <div className='sudoku-timer-text'>
+              {timer.timerText}
+            </div>
+          </div>
+          <div className='sudoku-ui-controls-item'>
+            <div className='sudoku-ui-controls-icon'>
+              <div className='help'>
+                <button onClick={goToAutomaticallySolveState}>
+                  {RobotIconElement()}
+                </button>
+                <span className="help-no-visible help-ui-controls-text">{'Attack board with backtracking'}</span>
+              </div>
+            </div>
+            <div className='sudoku-ui-controls-icon'>
+              <div className='help'>
+                <button onClick={resetBoard}>
+                  {ReplyFillElement()}
+                </button>
+                <span className="help-no-visible help-ui-controls-text">{'Reset current board'}</span>
+              </div>
+            </div>
+            <div className='sudoku-ui-controls-icon'>
+              <div className='help'>
+                <button onClick={newGame}>
+                  {TrashFillElement()}
+                </button>
+                <span className="help-no-visible help-ui-controls-text">{'Drop and start a new game'}</span>
+              </div>
+            </div>
+          </div>
+          <div className='sudoku-blank-side-col'></div>
+        </div>
+        <div className="sudoku-main-grid">
+          <div className='sudoku-blank-side-col'></div>
+          <div className='sudoku-board'>
+            {Board()}
+          </div>
+          <div className='sudoku-blank-side-col'></div>
+        </div>
+      </div>
+    )
   }
 
   function sleep (ms: number) {
@@ -345,10 +398,13 @@ function Sudoku () {
     animationSpeed.current = newSpeed
   }
 
-  function onAutomaticallySolveState (): ReactElement[] {
+  function onAutomaticallySolveState (): ReactElement {
     const SpeedSlider = () => {
       return (
-        <input className="" onChange={changeAnimationSpeed} type="range" min="0" max="100" id="speedSlider" />
+        <div className='speed-slider'>
+          <div className='speed-slider-text' >{'Animation Speed'}</div>
+          <input className="speed-slider-input" itemID='speed-slider' onChange={changeAnimationSpeed} type="range" min="0" max="100" id="speedSlider" step={1}/>
+        </div>
       )
     }
 
@@ -364,62 +420,184 @@ function Sudoku () {
     boardTitleElements.push(RobotIconElement())
     boardTitleElements.push(<div className='board-title-text'>{'Solving with a backtracking algorithm'}</div>)
 
-    const elements: ReactElement[] = []
-    elements.push(BoardTitle(boardTitleElements))
-    elements.push(Board())
-    elements.push(uiButtonsContainer([SpeedSlider(), NewGameButton()]))
-    return elements
+    return (
+      <div className="sudoku-screen">
+        <div className="sudoku-nav">
+          <h3 className='sudoku-nav-text'>
+            {'Sudoku   '}
+            <div className='help'>
+              {InfoCircleFillElement()}
+              <span className="help-no-visible help-game-rules">
+                {'Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions'}
+                <br/>
+                {' Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions'}
+                <br/>
+                {'Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions'}
+
+              </span>
+            </div>
+          </h3>
+        </div>
+        <div className="sudoku-top-grid">
+          <div className='sudoku-blank-side-col'></div>
+          <div className='sudoku-solving-info'>
+            <div className='sudoku-solving-text'>
+              {'Using backtracking.'}
+            </div>
+            <div className='sudoku-ui-controls-icon'>
+              <div className='help'>
+                <button>
+                  {RobotIconElement()}
+                </button>
+                <span className="help-no-visible help-ui-controls-text">{'Attacking board with backtracking'}</span>
+              </div>
+            </div>
+          </div>
+          <div className='sudoku-ui-solving-items'>
+            <div className='sudoku-ui-controls-icon'>
+              <div className='help'>
+                <button onClick={newGame}>
+                  {TrashFillElement()}
+                </button>
+                <span className="help-no-visible help-ui-controls-text">{'Drop and start a new game'}</span>
+              </div>
+            </div>
+          </div>
+          <div className='sudoku-blank-side-col'></div>
+        </div>
+        <div className="sudoku-main-grid">
+          <div className='sudoku-blank-side-col'></div>
+          <div className='sudoku-board'>
+            {Board()}
+            {SpeedSlider()}
+          </div>
+          <div className='sudoku-blank-side-col'></div>
+        </div>
+      </div>
+    )
   }
 
-  function onSolvedState (): ReactElement[] {
-    const elements = []
-    const boardTitleElements = []
-    if (solveResults.wasSolvedAutomatically) {
-      boardTitleElements.push(RobotIconElement())
-      boardTitleElements.push(<div className='board-title-text'>{'Success!'}</div>)
-    } else {
-      boardTitleElements.push(StopwatchIconElement())
-      boardTitleElements.push(TimerText())
-    }
-    elements.push(BoardTitle(boardTitleElements))
-    elements.push(Board())
-    elements.push(uiButtonsContainer([NewGameButton()]))
-    return elements
-  }
-
-  function StateMachineComponents (): ReactElement[] {
-    const clearAllIntervals = () => {
-      while (intervalsIds.current.length > 0) {
-        clearInterval(intervalsIds.current.shift())
+  function onSolvedState (): ReactElement {
+    function UiTopElements (): ReactElement {
+      if (solveResults.wasSolvedAutomatically) {
+        return (
+          <React.Fragment>
+            <div className='sudoku-blank-side-col'></div>
+            <div className='sudoku-solving-info'>
+              <div className='sudoku-solving-text'>
+                {'Success.'}
+              </div>
+              <div className='sudoku-ui-controls-icon'>
+                <div className='help'>
+                  <button>
+                    {RobotIconElement()}
+                  </button>
+                  <span className="help-no-visible help-ui-controls-text">{'Attacking board with backtracking'}</span>
+                </div>
+              </div>
+            </div>
+            <div className='sudoku-ui-solving-items'>
+            <div className='sudoku-ui-controls-icon'>
+              <div className='help'>
+                <div className='help-new-game'></div>
+              </div>
+              <div className='help'>
+                <button onClick={newGame}>
+                  {TrashFillElement()}
+                </button>
+                <span className="help-no-visible help-ui-controls-text">{'Drop and start a new game'}</span>
+                </div>
+              </div>
+            </div>
+            <div className='sudoku-blank-side-col'></div>
+          </React.Fragment>
+        )
+      } else {
+        return (
+          <React.Fragment>
+            <div className='sudoku-blank-side-col'></div>
+            <div className='sudoku-timer-item'>
+              <div className='sudoku-timer-icon'>
+                {StopwatchIconElement()}
+              </div>
+              <div className='sudoku-timer-text'>
+                {timer.timerText}
+              </div>
+            </div>
+            <div className='sudoku-ui-solving-items'>
+            <div className='sudoku-ui-controls-icon'>
+              <div className='help'>
+                <div className='help-new-game'></div>
+              </div>
+              <div className='help'>
+                <button onClick={newGame}>{TrashFillElement()}
+                </button>
+                <span className="help-no-visible help-ui-controls-text">{'Drop and start a new game'}</span>
+              </div>
+            </div>
+          </div>
+            <div className='sudoku-blank-side-col'></div>
+          </React.Fragment>
+        )
       }
     }
-    switch (stateMachine.current) {
-      case 'loading':
-        return onLoadingState()
-      case 'configuration':
-        clearAllIntervals()
-        return onConfigurationState()
-      case 'onGame':
-        return onGameState()
-      case 'automaticallySolve':
-        clearAllIntervals()
-        return onAutomaticallySolveState()
-      case 'solved':
-        clearAllIntervals()
-        return onSolvedState()
-      default:
-        return onLoadingState()
+
+    return (
+      <div className="sudoku-screen">
+        <div className="sudoku-nav">
+          <h3 className='sudoku-nav-text'>
+            {'Sudoku   '}
+            <div className='help'>
+              {InfoCircleFillElement()}
+              <span className="help-no-visible help-game-rules">
+                {'Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions'}
+                <br/>
+                {' Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions'}
+                <br/>
+                {'Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions'}
+
+              </span>
+            </div>
+          </h3>
+        </div>
+        <div className="sudoku-top-grid">
+            <UiTopElements />
+        </div>
+        <div className="sudoku-main-grid">
+          <div className='sudoku-blank-side-col'></div>
+          <div className='sudoku-board'>
+            {Board()}
+            {!solveResults.wasSolvedAutomatically ? <h3 className='speed-slider-text'>{'Thanks for playing'}</h3> : ''}
+          </div>
+          <div className='sudoku-blank-side-col'></div>
+        </div>
+      </div>
+    )
+  }
+
+  const clearAllIntervals = () => {
+    while (intervalsIds.current.length > 0) {
+      clearInterval(intervalsIds.current.shift())
     }
   }
 
-  return (
-    <div className="sudoku">
-      <div className="header">
-        <h3>Sudoku</h3>
-          {StateMachineComponents()}
-      </div>
-    </div>
-  )
+  switch (stateMachine.current) {
+    case 'loading':
+      return onLoadingState()
+    case 'configuration':
+      clearAllIntervals()
+      return onConfigurationState()
+    case 'onGame':
+      return onGameState()
+    case 'automaticallySolve':
+      clearAllIntervals()
+      return onAutomaticallySolveState()
+    case 'solved':
+      clearAllIntervals()
+      return onSolvedState()
+    default:
+      return onLoadingState()
+  }
 }
 
 export default Sudoku

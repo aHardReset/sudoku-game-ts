@@ -7,7 +7,7 @@
     gap: 2rem;
     padding: 0 1rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 4rem;
+    height: 8vh;
 }
 
 .site-title {
@@ -37,7 +37,7 @@
 
 .nav li:hover{
     background-color: #777;
-    filter: drop-shadow(0 0 2em white);
+    filter: drop-shadow(0 0 2em aliceblue);
 }
 
 .navbar-icon {

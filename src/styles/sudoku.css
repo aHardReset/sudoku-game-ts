@@ -1,16 +1,280 @@
-.sudoku {
-  text-align: center;
+
+/* Loading  */
+.loading-grid {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  min-height: calc(100vh - 8vh);
 }
 
-.header {
-  background-color: #333;
-  color: white;
+.loading-text {
+  color: aliceblue;
+  font-size: 5vh;
+  font-weight: bold;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-align: center;
+  /* center the text in height */
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+}
+
+/* Tooltip container */
+.help {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.help .help-ui-controls-text {
+  visibility: hidden;
+  width: 24vw;
+  background-color: aliceblue;
+  color: #333;
+  text-align: center;
+  height: fit-content;
+  padding: 2vh;
+  border-radius: 6px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 2vh;
+  /* Position the help text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -11.5vw;
+  margin-bottom: 1.5vh;
+}
+
+/* Show the help text when you mouse over the help container */
+.help:hover .help-no-visible {
+  visibility: visible;
+}
+
+.help .help-ui-controls-text::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the help */
+  left: 50%;
+  margin-left: -1vw;
+  border-width: 1vh;
+  border-style: solid;
+  border-color: aqua transparent transparent transparent;
+}
+
+.help .help-game-rules {
+  visibility: hidden;
+  width: 50vw;
+  background-color: aliceblue;
+  color: #333;
+  text-align: left;
+  height: fit-content;
+  padding: 2vh;
+  margin-top: 1.5vh;
+  border-radius: 6px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 2vh;
+  /* Position the help text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -24.5vw;
+}
+
+.help .help-game-rules::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%; /* At the top of the help */
+  left: 50%;
+  margin-left: -1vw;
+  border-width: 1vh;
+  border-style: solid;
+  border-color: transparent transparent aqua transparent;
+}
+
+.help-new-game {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 2vh;
+  margin-right: 8vw;
+
+}
+
+.sudoku-screen {
+  background-color: #333;
+}
+
+.sudoku-nav{
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  color: aliceblue;
+  height: 6vh;
+}
+
+.sudoku-nav-text{
+  margin: 1vh 1vh;
+  font-size: 3vh;
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.sudoku-top-grid {
+  display: grid;
+  grid-template-columns: 1fr 4fr 4fr 1fr;
+  height: 16vh;
+}
+
+.sudoku-timer-item{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding: 0.5em;
+  color: aliceblue;
+  margin-right: 6vw;
+}
+
+.sudoku-timer-icon{
+  margin-right: 1vw;
+}
+
+.sudoku-timer-text{
+  font-size: 3vh;
+  text-align: right;
+  font-weight: lighter;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+}
+
+.sudoku-ui-controls-item{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-align: right;
+  padding: 0.5em;
+  color: aliceblue;
+  margin-left: 6vw;
+
+}
+
+.speed-slider {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  min-height: calc(100vh - 4rem);
+  align-items: center;
+  text-align: center;
+  height: 10vh;
+}
+
+.sudoku-ui-solving-items {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-align: center;
+  padding: 0.5em;
+  color: aliceblue;
+  margin-left: 4vh;
+}
+
+.sudoku-ui-solving-slider{
+  align-items: center;
+  text-align: center;
+
+}
+
+.speed-slider-text {
+  font-size: 3vh;
+  font-weight: lighter;
+  text-align: center;
+  color: aliceblue;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-bottom: 1vh;
+}
+
+.speed-slider-input {
+  -webkit-appearance: none;
+  width: 450px;
+  height: 1vh;
+  background: #333;
+  outline: none;
+  border: 5px solid aliceblue;
+  border-radius: 2vh;
+}
+
+.speed-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: fit-content;
+  height: 2vh;
+  background: #333;
+  cursor: pointer;
+  border: 0.4rem solid tomato;
+  border-radius: 0.5vh;
+}
+
+/* for firefox */
+.speed-slider-input::-moz-range-thumb {
+  width: fit-content;
+  height: 2vh;
+  background: #000;
+  cursor: pointer;
+  border: 1vh solid aliceblue;
+  border-radius: 1vh;
+}
+
+.sudoku-ui-controls-icon{
+  margin-right: 1vw;
+}
+
+.sudoku-ui-controls-icon button {
+  background-color: transparent;
+  border: none;
+}
+
+.sudoku-ui-controls-icon button:hover {
+  filter: drop-shadow(0 0 2em aliceblue);
+  cursor: pointer;
+}
+
+.sudoku-solving-info {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding: 0.5em;
+  color: aliceblue;
+  max-width: 40vw;
+}
+
+.sudoku-solving-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 2vh;
+  text-align: right;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  
+}
+
+.sudoku-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  height: calc(100vh - 6vh - 8vh - 16vh);
+}
+
+.sudoku-configuration {
+  height: calc(100vh - 6vh - 8vh);
+}
+
+.sudoku-board{
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
 }
 
 .cell-input {
@@ -65,8 +329,10 @@ input[type=number] {
   margin-top: 2vh;
 }
 
-.uiText {
+.select-difficulty-text {
   font-size: 5vh;
+  text-align: center;
+  color: aliceblue;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -131,6 +397,26 @@ input[type=number] {
   height: 4vh;
 }
 
+.reply-fill-icon {
+  fill: aqua;
+  width: 4vh;
+  height: 4vh;
+}
+
+.trash-fill-icon{
+  fill: tomato;
+  width: 4vh;
+  height: 4vh;
+}
+
+.info-circle-fill-icon{
+  justify-content: top;
+  fill: aliceblue;
+  width: 2vh;
+  height: 2vh;
+
+}
+
 .board-title{
   display: flex;
   flex-direction: row;
@@ -147,7 +433,11 @@ input[type=number] {
   min-height: 5vh;
 }
 
-.timer-text{
+.board-footer-text {
+  font-size: 3vh;
   font-weight: lighter;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
+  color: aliceblue;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-bottom: 1vh;
 }
