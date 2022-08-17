@@ -1,14 +1,18 @@
+.leader-board-fill{
+  background-color: #333;
+}
+
 .leader-board {
   max-width: 25rem;
-  margin: 5rem auto;
+  margin: 2vh auto;
   border-radius: 1rem;
   box-shadow: 2px 2px 16px 1px #aaa;
   font-family: sans-serif;
 }
 
 .leader-board-header {
-  background-color: #ff7500;
-  color: white;
+  background-color: tomato;
+  color: aliceblue;
   text-transform: uppercase;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
@@ -25,8 +29,8 @@
 }
 
 .leader-board-table {
-  background-color: #16181e;
-  color: #999;
+  background-color: #333;
+  color: aliceblue;
   width: 100%;
   border-collapse: collapse;
   border-bottom-left-radius: 1rem;
@@ -36,7 +40,7 @@
 
 .leader-board-thead {
   font-size: 0.7rem;
-  color: #555;
+  color: aliceblue;
   text-transform: uppercase;
 }
 
@@ -45,7 +49,7 @@
 }
 
 .leader-board-tbody .nickname-thead {
-  color: white;
+  color: aliceblue;
   font-weight: bold;
   font-size: 0.9rem;
 }
@@ -55,8 +59,8 @@
   text-align: right;
 }
 
-.leader-board-tbody .leader-board-th:nth-child(2n) {
-  background-color: #1f232c;
+.leader-board-tbody .leader-board-tr:nth-child(2n) {
+  background-color: #444;
 }
 
 .position-thead {

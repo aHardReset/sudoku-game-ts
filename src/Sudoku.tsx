@@ -1,4 +1,5 @@
 import './styles/sudoku.css'
+import './styles/leaderBoard.css'
 import React, { useState, useRef, useEffect, ReactElement } from 'react'
 import {
   generateNewBoard,
@@ -8,6 +9,8 @@ import {
   isASolvedBoard,
   isABlockedCell
 } from './engines/sudokuEngine'
+import { calculateTimerText } from './utils/utils'
+
 import StopwatchIcon from './assets/stopwatch-fill'
 import RobotIcon from './assets/robot'
 import ReplyFill from './assets/replyFill'
@@ -37,13 +40,27 @@ type Timer = {
   timerText: string,
 }
 
+type LeaderBoardEntry = {
+  nickname: string,
+  milliseconds: number,
+}
+
+type NewTopTen = {
+  nickname: string,
+  posting: boolean,
+  isPosted: boolean,
+}
+
 function Sudoku () {
   const [currentBoard, setCurrentBoard] = useState(getObjectCopy(generateNewBoard()))
   const [stateMachine, setStateMachine] = useState<StateMachine>({ current: 'loading' })
   const [solveResults, setSolveResults] = useState<SolveResults>({ wasSolvedAutomatically: false, milliseconds: 0, endBoard: [[]], initBoard: getObjectCopy(currentBoard), difficulty: 0 })
   const [timer, setTimer] = useState<Timer>({ startTime: new Date().getTime(), endTime: 0, timerText: '00:00' })
+  const [topTenResults, setTopTenResults] = useState<LeaderBoardEntry[]>([])
+  const [newTopTenData, setNewTopTenData] = useState<NewTopTen>({ nickname: '', isPosted: false, posting: false })
   const animationSpeed = useRef(maxAnimationSpeed + Math.round((minAnimationSpeed - maxAnimationSpeed) / 2))
   const intervalsIds = useRef<number[]>([])
+  const isFetching = useRef(false)
 
   useEffect(() => {
     setStateMachine({ current: 'configuration', previous: 'loading' })
@@ -182,14 +199,9 @@ function Sudoku () {
       const startTime = new Date().getTime()
       setTimer({ startTime, endTime: 0, timerText: '00:00' })
       const timerInterval = setInterval(() => {
-        const calculateTimerText = (currentTime: number) => {
-          const seconds = Math.floor((currentTime - startTime) / 1000)
-          const minutes = Math.floor(seconds / 60)
-          const secondsLeft = seconds % 60
-          return `${minutes < 10 ? '0' : ''}${minutes}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`
-        }
         const currentTime = new Date().getTime()
-        setTimer(getObjectCopy({ startTime, endTime: currentTime, timerText: calculateTimerText(currentTime) }))
+        const milliseconds = currentTime - startTime
+        setTimer(getObjectCopy({ startTime, endTime: currentTime, timerText: calculateTimerText(milliseconds) }))
       }, 1000)
       intervalsIds.current.push(timerInterval)
       setStateMachine({ current: 'onGame', previous: stateMachine.current })
@@ -477,6 +489,46 @@ function Sudoku () {
     )
   }
 
+  async function getTopTen () {
+    if (topTenResults.length === 0 && !isFetching.current) {
+      isFetching.current = true
+      const difficulty = solveResults.difficulty.toString()
+      const url: URL = new URL('http://localhost:5000/generic-and-experiment/us-central1/app/v1/sudoku/get-leader-board/' + difficulty)
+      const topTen = await fetch(url, { method: 'GET', })
+      const response = await topTen.json()
+      setTopTenResults(response)
+      isFetching.current = false
+    }
+  }
+
+  function LeaderBoardComponent () {
+    return (
+      <div className='leader-board'>
+        <header className='leader-board-header'>
+          <h1 className='leader-board-header-text'>Top 10</h1>
+        </header>
+        <table className='leader-board-table'>
+          <thead className='leader-board-thead'>
+            <tr className='leader-board-tr'>
+              <th className='leader-board-th position-thead'>{'Pos'}</th>
+              <th className='leader-board-th nickname-thead'>{'Nickname'}</th>
+              <th className='leader-board-th time-thead'>{'Time'}</th>
+            </tr>
+          </thead>
+          <tbody className='leader-board-tbody'>
+            {topTenResults.map(({ nickname, milliseconds }, index) => (
+              <tr className='leader-board-tr' key={index}>
+                <td className='leader-board-td leader-board-position'>{index + 1}</td>
+                <td className='leader-board-td leader-board-nickname'>{nickname}</td>
+                <td className='leader-board-td leader-board-time'>{calculateTimerText(milliseconds)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
   function onSolvedState (): ReactElement {
     function UiTopElements (): ReactElement {
       if (solveResults.wasSolvedAutomatically) {
@@ -542,6 +594,106 @@ function Sudoku () {
       }
     }
 
+    const ThanksForPlayingElement = () => {
+      return (
+        <h3 className='speed-slider-text'>{'Thanks for playing'}</h3>
+      )
+    }
+
+    const TopTenCongratsComponent = () => {
+      return (
+        <div className='top-ten-congrats'>
+          <h3 className='top-ten-congrats-text'>{'Congratulations! You made the top 10!'}</h3>
+        </div>
+      )
+    }
+
+    const TellToScrollDownComponent = () => {
+      return (
+        <h3 className='scroll-down-text '>{'⬇ Scroll down to see the top 10 ⬇'}</h3>
+      )
+    }
+
+    const RegisterNicknameComponent = () => {
+      const registerNickname = async () => {
+        newTopTenData.isPosted = true
+        newTopTenData.posting = true
+        setNewTopTenData(getObjectCopy(newTopTenData))
+        setTopTenResults(getObjectCopy(topTenResults))
+        return
+        const url: URL = new URL('http://localhost:5000/generic-and-experiment/us-central1/app/v1/sudoku/register-nickname')
+        const body = {
+          nickname: newTopTenData.nickname,
+          difficulty: solveResults.difficulty.toString(),
+          milliseconds: solveResults.milliseconds,
+        }
+        const response = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(body)
+        })
+        if (response.status === 201) {
+          const newTable = await response.json()
+          setTopTenResults(newTable)
+          newTopTenData.isPosted = true
+          setNewTopTenData(getObjectCopy(newTopTenData))
+        }
+      }
+
+      const nicknameOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        newTopTenData.nickname = e.target.value
+        setNewTopTenData(getObjectCopy(newTopTenData))
+      }
+
+      const isAValidNickName = () => {
+        return newTopTenData.nickname.length > 2 && newTopTenData.nickname.length < 20
+      }
+
+      return (
+        <div className='sudoku-register-nickname'>
+          <div className='sudoku-register-nickname-text'>
+            <h3 className='speed-slider-text'>{'Register your nickname'}</h3>
+            <input className='sudoku-register-nickname-input' onChange={nicknameOnChange} disabled={newTopTenData.posting} value={newTopTenData.nickname} type='text' placeholder='Nickname' />
+            <button className='sudoku-register-nickname-button' disabled={!isAValidNickName() || newTopTenData.posting} onClick={registerNickname}>{'Register'}</button>
+            {!isAValidNickName() && <div className='sudoku-register-nickname-error'>{'Nickname must be between 3 and 20 characters'}</div>}
+          </div>
+        </div>
+      )
+    }
+
+    const UiBottomElements = (): ReactElement => {
+      if (!solveResults.wasSolvedAutomatically || !newTopTenData.isPosted) {
+        if (topTenResults.length === 0) {
+          return (
+            <div className='ui-bottom-elements'>
+              {ThanksForPlayingElement()}
+              <h3>{'Loading...'}</h3>
+            </div>
+          )
+        }
+        if (solveResults.milliseconds < topTenResults[9].milliseconds) {
+          return (
+            <div className='ui-bottom-elements'>
+              {TellToScrollDownComponent()}
+              {TopTenCongratsComponent()}
+              {RegisterNicknameComponent()}
+              {LeaderBoardComponent()}
+            </div>
+          )
+        }
+      }
+      return (
+        <div className='ui-bottom-elements'>
+          {TellToScrollDownComponent()}
+          {ThanksForPlayingElement()}
+          {LeaderBoardComponent()}
+        </div>
+      )
+    }
+
+    if (navigator.onLine) {
+      getTopTen()
+    }
+
     return (
       <div className="sudoku-screen">
         <div className="sudoku-nav">
@@ -561,13 +713,13 @@ function Sudoku () {
           </h3>
         </div>
         <div className="sudoku-top-grid">
-            <UiTopElements />
+          {UiTopElements()}
         </div>
         <div className="sudoku-main-grid">
           <div className='sudoku-blank-side-col'></div>
           <div className='sudoku-board'>
             {Board()}
-            {!solveResults.wasSolvedAutomatically ? <h3 className='speed-slider-text'>{'Thanks for playing'}</h3> : ''}
+            {navigator.onLine ? UiBottomElements() : ThanksForPlayingElement()}
           </div>
           <div className='sudoku-blank-side-col'></div>
         </div>
@@ -581,7 +733,7 @@ function Sudoku () {
     }
   }
 
-  switch (stateMachine.current) {
+  switch ('solved') {
     case 'loading':
       return onLoadingState()
     case 'configuration':
