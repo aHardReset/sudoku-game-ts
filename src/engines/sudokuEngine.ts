@@ -42,7 +42,7 @@ function generateNewBoard (difficulty?: number): number[][] {
   const base = 3
   const side = base * base
   const gameSpace = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  const emptiesByDifficulty = [26, 36, 46, 56]
+  const emptiesByDifficulty = [1, 36, 46, 56]
   if (difficulty !== undefined) {
     if (difficulty >= emptiesByDifficulty.length) {
       difficulty = 0

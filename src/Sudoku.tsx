@@ -14,12 +14,15 @@ import { calculateTimerText } from './utils/utils'
 import StopwatchIcon from './assets/stopwatch-fill'
 import RobotIcon from './assets/robot'
 import ReplyFill from './assets/replyFill'
-import TrashFill from './assets/trashFill'
+import PlusSquareFill from './assets/plusSquareFill'
 import InfoCircleFill from './assets/infoCircleFill'
 import type { Step } from './engines/sudokuEngine'
 
 const minAnimationSpeed = 1000
 const maxAnimationSpeed = 50
+
+const apiUrlStringProd = 'https://us-central1-generic-and-experiment.cloudfunctions.net/app/v1/sudoku'
+const apiUrlStringDebug = 'http://localhost:5000/generic-and-experiment/us-central1/app/v1/sudoku'
 
 type SolveResults ={
   wasSolvedAutomatically: boolean,
@@ -179,9 +182,9 @@ function Sudoku () {
     )
   }
 
-  function TrashFillElement (): ReactElement {
+  function PlusSquareFillElement (): ReactElement {
     return (
-      <TrashFill className='icon trash-fill-icon' />
+      <PlusSquareFill className='icon trash-fill-icon' />
     )
   }
 
@@ -340,9 +343,9 @@ function Sudoku () {
             <div className='sudoku-ui-controls-icon'>
               <div className='help'>
                 <button onClick={newGame}>
-                  {TrashFillElement()}
+                  {PlusSquareFillElement()}
                 </button>
-                <span className="help-no-visible help-ui-controls-text">{'Drop and start a new game'}</span>
+                <span className="help-no-visible help-ui-controls-text">{'Start a new game'}</span>
               </div>
             </div>
           </div>
@@ -468,10 +471,13 @@ function Sudoku () {
           <div className='sudoku-ui-solving-items'>
             <div className='sudoku-ui-controls-icon'>
               <div className='help'>
+                <div className='help-new-game'></div>
+              </div>
+              <div className='help'>
                 <button onClick={newGame}>
-                  {TrashFillElement()}
+                  {PlusSquareFillElement()}
                 </button>
-                <span className="help-no-visible help-ui-controls-text">{'Drop and start a new game'}</span>
+                <span className="help-no-visible help-ui-controls-text">{'Start a new game'}</span>
               </div>
             </div>
           </div>
@@ -493,7 +499,7 @@ function Sudoku () {
     if (topTenResults.length === 0 && !isFetching.current) {
       isFetching.current = true
       const difficulty = solveResults.difficulty.toString()
-      const url: URL = new URL('http://localhost:5000/generic-and-experiment/us-central1/app/v1/sudoku/get-leader-board/' + difficulty)
+      const url: URL = new URL([apiUrlStringDebug, 'get-leader-board'].join('/') + `/${difficulty}`)
       const topTen = await fetch(url, { method: 'GET', })
       const response = await topTen.json()
       setTopTenResults(response)
@@ -535,29 +541,29 @@ function Sudoku () {
         return (
           <React.Fragment>
             <div className='sudoku-blank-side-col'></div>
-            <div className='sudoku-solving-info'>
-              <div className='sudoku-solving-text'>
-                {'Success.'}
-              </div>
-              <div className='sudoku-ui-controls-icon'>
-                <div className='help'>
-                  <button>
-                    {RobotIconElement()}
-                  </button>
-                  <span className="help-no-visible help-ui-controls-text">{'Attacking board with backtracking'}</span>
+              <div className='sudoku-solving-info'>
+                <div className='sudoku-solving-text'>
+                  {'Success.'}
+                </div>
+                <div className='sudoku-ui-controls-icon'>
+                  <div className='help'>
+                    <button>
+                      {RobotIconElement()}
+                    </button>
+                    <span className="help-no-visible help-ui-controls-text">{'Board is solved'}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className='sudoku-ui-solving-items'>
-            <div className='sudoku-ui-controls-icon'>
-              <div className='help'>
-                <div className='help-new-game'></div>
-              </div>
-              <div className='help'>
-                <button onClick={newGame}>
-                  {TrashFillElement()}
-                </button>
-                <span className="help-no-visible help-ui-controls-text">{'Drop and start a new game'}</span>
+              <div className='sudoku-ui-solving-items'>
+              <div className='sudoku-ui-controls-icon'>
+                <div className='help'>
+                  <div className='help-new-game'></div>
+                </div>
+                <div className='help'>
+                  <button onClick={newGame}>
+                    {PlusSquareFillElement()}
+                  </button>
+                  <span className="help-no-visible help-ui-controls-text">{'Start a new game'}</span>
                 </div>
               </div>
             </div>
@@ -568,26 +574,27 @@ function Sudoku () {
         return (
           <React.Fragment>
             <div className='sudoku-blank-side-col'></div>
-            <div className='sudoku-timer-item'>
-              <div className='sudoku-timer-icon'>
-                {StopwatchIconElement()}
+              <div className='sudoku-timer-item'>
+                <div className='sudoku-timer-icon'>
+                  {StopwatchIconElement()}
+                </div>
+                <div className='sudoku-timer-text'>
+                  {timer.timerText}
+                </div>
               </div>
-              <div className='sudoku-timer-text'>
-                {timer.timerText}
+              <div className='sudoku-ui-solving-items'>
+              <div className='sudoku-ui-controls-icon'>
+                <div className='help'>
+                  <div className='help-new-game'></div>
+                </div>
+                <div className='help'>
+                  <button onClick={newGame}>
+                    {PlusSquareFillElement()}
+                  </button>
+                  <span className="help-no-visible help-ui-controls-text">{'Start a new game'}</span>
+                </div>
               </div>
             </div>
-            <div className='sudoku-ui-solving-items'>
-            <div className='sudoku-ui-controls-icon'>
-              <div className='help'>
-                <div className='help-new-game'></div>
-              </div>
-              <div className='help'>
-                <button onClick={newGame}>{TrashFillElement()}
-                </button>
-                <span className="help-no-visible help-ui-controls-text">{'Drop and start a new game'}</span>
-              </div>
-            </div>
-          </div>
             <div className='sudoku-blank-side-col'></div>
           </React.Fragment>
         )
@@ -602,40 +609,46 @@ function Sudoku () {
 
     const TopTenCongratsComponent = () => {
       return (
-        <div className='top-ten-congrats'>
-          <h3 className='top-ten-congrats-text'>{'Congratulations! You made the top 10!'}</h3>
-        </div>
+        <h3 className='top-ten-congrats-text'>{'Congratulations! You made the top 10!'}</h3>
       )
     }
 
     const TellToScrollDownComponent = () => {
       return (
-        <h3 className='scroll-down-text '>{'⬇ Scroll down to see the top 10 ⬇'}</h3>
+        <h3 className='scroll-down-text '>{'⬇️ Scroll down to see the top 10 ⬇️'}</h3>
       )
     }
 
     const RegisterNicknameComponent = () => {
       const registerNickname = async () => {
-        newTopTenData.isPosted = true
-        newTopTenData.posting = true
-        setNewTopTenData(getObjectCopy(newTopTenData))
-        setTopTenResults(getObjectCopy(topTenResults))
-        return
-        const url: URL = new URL('http://localhost:5000/generic-and-experiment/us-central1/app/v1/sudoku/register-nickname')
-        const body = {
-          nickname: newTopTenData.nickname,
-          difficulty: solveResults.difficulty.toString(),
-          milliseconds: solveResults.milliseconds,
-        }
-        const response = await fetch(url, {
-          method: 'POST',
-          body: JSON.stringify(body)
-        })
-        if (response.status === 201) {
+        if (!isFetching.current) {
+          isFetching.current = true
+          const difficulty = solveResults.difficulty.toString()
+          const url: URL = new URL([apiUrlStringDebug, 'register-new-result'].join('/'))
+          console.log(url)
+          const headers = new Headers()
+          headers.append('Content-Type', 'application/json')
+          headers.append('Access-Control-Allow-Headers', 'Content-Type')
+
+          const body = {
+            nickname: newTopTenData.nickname,
+            difficulty,
+            milliseconds: solveResults.milliseconds,
+          }
+          newTopTenData.posting = true
+          const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers,
+          })
           const newTable = await response.json()
-          setTopTenResults(newTable)
-          newTopTenData.isPosted = true
-          setNewTopTenData(getObjectCopy(newTopTenData))
+          if (response.status === 201) {
+            setTopTenResults(newTable)
+            newTopTenData.isPosted = true
+            setNewTopTenData(getObjectCopy(newTopTenData))
+          }
+          console.log(newTable)
+          isFetching.current = false
         }
       }
 
@@ -645,15 +658,15 @@ function Sudoku () {
       }
 
       const isAValidNickName = () => {
-        return newTopTenData.nickname.length > 2 && newTopTenData.nickname.length < 20
+        return newTopTenData.nickname.length >= 3 && newTopTenData.nickname.length <= 20
       }
 
       return (
         <div className='sudoku-register-nickname'>
           <div className='sudoku-register-nickname-text'>
-            <h3 className='speed-slider-text'>{'Register your nickname'}</h3>
+            <h3 className='top-ten-congrats-text'>{'How we should call you?'}</h3>
             <input className='sudoku-register-nickname-input' onChange={nicknameOnChange} disabled={newTopTenData.posting} value={newTopTenData.nickname} type='text' placeholder='Nickname' />
-            <button className='sudoku-register-nickname-button' disabled={!isAValidNickName() || newTopTenData.posting} onClick={registerNickname}>{'Register'}</button>
+            <button className='sudoku-register-nickname-button' disabled={!isAValidNickName() || newTopTenData.posting} onClick={registerNickname}>{'Send'}</button>
             {!isAValidNickName() && <div className='sudoku-register-nickname-error'>{'Nickname must be between 3 and 20 characters'}</div>}
           </div>
         </div>
@@ -661,16 +674,16 @@ function Sudoku () {
     }
 
     const UiBottomElements = (): ReactElement => {
-      if (!solveResults.wasSolvedAutomatically || !newTopTenData.isPosted) {
+      if (solveResults.wasSolvedAutomatically || !newTopTenData.isPosted) {
         if (topTenResults.length === 0) {
           return (
             <div className='ui-bottom-elements'>
               {ThanksForPlayingElement()}
-              <h3>{'Loading...'}</h3>
+              <h3 className='sudoku-loading-leader-board'>{'Loading'}</h3>
             </div>
           )
         }
-        if (solveResults.milliseconds < topTenResults[9].milliseconds) {
+        if (solveResults.milliseconds < topTenResults[9].milliseconds && !solveResults.wasSolvedAutomatically) {
           return (
             <div className='ui-bottom-elements'>
               {TellToScrollDownComponent()}
@@ -733,7 +746,7 @@ function Sudoku () {
     }
   }
 
-  switch ('solved') {
+  switch (stateMachine.current) {
     case 'loading':
       return onLoadingState()
     case 'configuration':

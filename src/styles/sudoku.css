@@ -95,7 +95,7 @@
   border-color: transparent transparent aqua transparent;
 }
 
-.help-new-game {
+.help .help-new-game {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -296,6 +296,79 @@
   margin-bottom: 1vh;
 }
 
+.top-ten-congrats-text {
+  font-size: 1.5rem;
+  font-weight: lighter;
+  text-align: center;
+  color: aliceblue;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.sudoku-register-nickname-input {
+  /* beautiful input text box */
+  -webkit-appearance: none;
+  width: 70%;
+  height: 3vh;
+  background: aliceblue;
+  outline: none;
+  border: 5px;
+  border-radius: 2vh;
+  /* center placeholder text */
+  text-align: center;
+  color: #333;
+  font-size: 2vh;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.sudoku-register-nickname-error {
+  font-size: 1;
+  font-weight: lighter;
+  text-align: center;
+  color: tomato;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-bottom: 1vh;
+}
+
+.sudoku-register-nickname-button{
+  /* beautiful send button */
+  -webkit-appearance: none;
+  width: 30%;
+  height: 3vh;
+  background: tomato;
+  outline: none;
+  border: 5px;
+  border-radius: 2vh;
+  /* center text */
+  text-align: center;
+  color: aliceblue;
+  font-size: 2vh;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.sudoku-loading-leader-board{
+  /* beautiful text to tell user that the game is loading */
+  font-size: 3vh;
+  font-weight: lighter;
+  text-align: center;
+  color: aliceblue;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  -webkit-animation: sudoku-loading-leader-board 1s ease-in-out infinite alternate;
+  -moz-animation: sudoku-loading-leader-board 1s ease-in-out infinite alternate;
+  animation: sudoku-loading-leader-board 1s ease-in-out infinite alternate;
+}
+
+/* add the sudoku-loading-leader-board text an always active glowing effect */
+@-webkit-keyframes sudoku-loading-leader-board {
+  from {
+    text-shadow: 0 0 10px aliceblue, 0 0 20px aliceblue, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px aliceblue, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+
 .cell-input {
   width: 5vh;
   height: 5vh;
@@ -414,18 +487,21 @@ input[type=number] {
   fill: orange;
   width: 4vh;
   height: 4vh;
+  -webkit-filter: drop-shadow(0px 0px 5px tomato);
 }
 
 .reply-fill-icon {
   fill: aqua;
   width: 4vh;
   height: 4vh;
+  -webkit-filter: drop-shadow(0px 0px 5px tomato);
 }
 
 .trash-fill-icon{
-  fill: tomato;
+  fill: aliceblue;
   width: 4vh;
   height: 4vh;
+  -webkit-filter: drop-shadow(0px 0px 5px tomato);
 }
 
 .info-circle-fill-icon{
