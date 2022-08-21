@@ -20,8 +20,9 @@
         "title": "Select Difficulty"
     },
     "backtracking": {
-        "help": "Attack board with backtracking",
+        "help": "Solve board with backtracking",
         "onAction": "Using Backtracking",
+        "onActionExtend": "Solving board with backtracking",
         "onFinish": "Success"
     },
     "resetBoard": "Reset current board",

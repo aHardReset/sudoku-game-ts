@@ -21,7 +21,7 @@ import ShareFill from './assets/shareFill'
 import type { Step } from './engines/sudokuEngine'
 
 const minAnimationSpeed = 1000
-const maxAnimationSpeed = 50
+const maxAnimationSpeed = 20
 
 const apiUrlStringProd = 'https://us-central1-generic-and-experiment.cloudfunctions.net/app/v1/sudoku'
 const apiUrlStringDebug = 'http://localhost:5000/generic-and-experiment/us-central1/app/v1/sudoku'
@@ -467,14 +467,14 @@ function Sudoku () {
           <div className='sudoku-blank-side-col'></div>
           <div className='sudoku-solving-info'>
             <div className='sudoku-solving-text'>
-              {'Using backtracking.'}
+              {t('backtracking.onAction')}
             </div>
             <div className='sudoku-ui-controls-icon'>
               <div className='help'>
                 <button>
                   {RobotIconElement()}
                 </button>
-                <span className="help-no-visible help-ui-controls-text">{'Attacking board with backtracking'}</span>
+                <span className="help-no-visible help-ui-controls-text">{t('backtracking.onActionExtend')}</span>
               </div>
             </div>
           </div>

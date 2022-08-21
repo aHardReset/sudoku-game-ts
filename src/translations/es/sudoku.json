@@ -20,9 +20,10 @@
         "title": "Elige la dificultad"
     },
     "backtracking": {
-        "help": "Atacar tablero con backtracking",
+        "help": "Resolver tablero con backtracking",
         "onAction": "Usando backtracking",
-        "onFinish": "Èxito"
+        "onActionExtend": "Resolviendo tablero con backtracking",
+        "onFinish": "Éxito"
     },
     "resetBoard": "Reiniciar el tablero",
     "newGame": "Iniciar nuevo tablero",
