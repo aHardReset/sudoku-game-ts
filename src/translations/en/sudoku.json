@@ -1,0 +1,24 @@
+{
+    "rules": {
+        "rule1": "Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions",
+        "rule2": "Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions",
+        "rule3": "Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions"
+    },
+    "difficulty": {
+        "buttons": {
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard",
+            "expert": "Expert",
+            "startGame": "Start Game!"
+        },
+        "title": "Select Difficulty"
+    },
+    "backtracking": {
+        "help": "Attack board with backtracking",
+        "onAction": "Using Backtracking"
+    },
+    "resetBoard": "Reset current board",
+    "newGame": "Start a new game",
+    "animationSpeed": "Animation Speed"
+}

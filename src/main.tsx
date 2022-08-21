@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client'
 
 import Navbar from './Navbar'
 // import App from './App'
-import LeaderBoardComponent from './components/sudoku/LeaderBoardComponent'
 import Sudoku from './Sudoku'
+import Home from './Home'
 
 import './styles/global.css'
 
@@ -17,6 +17,7 @@ import './styles/global.css'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Navbar />
-    <Sudoku />
+    { window.location.pathname === '/' && <Home /> }
+    { window.location.pathname === '/sudoku-backtracking' && <Sudoku /> }
   </React.StrictMode>
 )

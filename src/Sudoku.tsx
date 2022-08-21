@@ -499,8 +499,14 @@ function Sudoku () {
     if (topTenResults.length === 0 && !isFetching.current) {
       isFetching.current = true
       const difficulty = solveResults.difficulty.toString()
-      const url: URL = new URL([apiUrlStringDebug, 'get-leader-board'].join('/') + `/${difficulty}`)
-      const topTen = await fetch(url, { method: 'GET', })
+      let url: URL = new URL([apiUrlStringProd, 'get-leader-board'].join('/') + `/${difficulty}`)
+      const headers: Headers = new Headers()
+
+      if (['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+        url = new URL([apiUrlStringDebug, 'get-leader-board'].join('/') + `/${difficulty}`)
+        headers.append('Authorization', 'Bearer ' + import.meta.env.VITE_BEARER_TOKEN)
+      }
+      const topTen = await fetch(url, { method: 'GET', headers, })
       const response = await topTen.json()
       setTopTenResults(response)
       isFetching.current = false

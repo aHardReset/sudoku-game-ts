@@ -1,0 +1,24 @@
+{
+    "rules": {
+        "rule1": "Rule 1 - Cada fila debe contener los números del 1 al 9 sin repetirse",
+        "rule2": "Rule 2 - Cada columba debe contener los números del 1 al 9 sin repetirse",
+        "rule3": "Rule 3 - Cada cuadro limitado de 3x3 debe tener los números del 1 al 9 sin repetirse"
+    },
+    "difficulty": {
+        "buttons": {
+            "easy": "Fácil",
+            "medium": "Medio",
+            "hard": "Difícil",
+            "expert": "Experto",
+            "startGame": "¡Iniciar Juego!"
+        },
+        "title": "Elige la dificultad"
+    },
+    "backtracking": {
+        "help": "Atacar tablero con backtracking",
+        "onAction": "Usando backtracking"
+    },
+    "resetBoard": "Reiniciar el tablero",
+    "newGame": "Iniciar nuevo tablero",
+    "animationSpeed": "Velocidad de la animación"
+}
