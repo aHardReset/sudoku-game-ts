@@ -188,6 +188,7 @@
   align-items: center;
   text-align: center;
   height: 10vh;
+  width: 300px;
 }
 
 .sudoku-ui-solving-items {
@@ -221,7 +222,7 @@
 
 .speed-slider-input {
   -webkit-appearance: none;
-  width: 450px;
+  width: 100%;
   height: 1vh;
   background: #333;
   outline: none;
