@@ -29,8 +29,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>
       <Navbar />
-      { window.location.pathname === '/' && <Home /> }
-      { window.location.pathname === '/sudoku-backtracking' && <Sudoku /> }
+      <Sudoku />
     </I18nextProvider>
   </React.StrictMode>
 )
