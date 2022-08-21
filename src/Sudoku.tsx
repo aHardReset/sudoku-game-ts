@@ -1,5 +1,3 @@
-import './styles/sudoku.css'
-import './styles/leaderBoard.css'
 import React, { useState, useRef, useEffect, ReactElement } from 'react'
 import {
   generateNewBoard,
@@ -10,7 +8,10 @@ import {
   isABlockedCell
 } from './engines/sudokuEngine'
 import { calculateTimerText } from './utils/utils'
+import { useTranslation } from 'react-i18next'
 
+import './styles/sudoku.css'
+import './styles/leaderBoard.css'
 import StopwatchIcon from './assets/stopwatch-fill'
 import RobotIcon from './assets/robot'
 import ReplyFill from './assets/replyFill'
@@ -64,6 +65,7 @@ function Sudoku () {
   const animationSpeed = useRef(maxAnimationSpeed + Math.round((minAnimationSpeed - maxAnimationSpeed) / 2))
   const intervalsIds = useRef<number[]>([])
   const isFetching = useRef(false)
+  const [t, _] = useTranslation('sudoku') // eslint-disable-line no-unused-vars
 
   useEffect(() => {
     setStateMachine({ current: 'configuration', previous: 'loading' })
@@ -194,6 +196,21 @@ function Sudoku () {
     )
   }
 
+  function GameRulesInfo (): ReactElement {
+    return (
+      <div className='help'>
+        {InfoCircleFillElement()}
+        <span className="help-no-visible help-game-rules">
+          {t('rules.rule1')}
+          <br/>
+          {t('rules.rule2')}
+          <br/>
+          {t('rules.rule3')}
+        </span>
+      </div>
+    )
+  }
+
   function onConfigurationState (): ReactElement {
     const goToOnGameState = () => {
       const newBoard = generateNewBoard(solveResults.difficulty)
@@ -224,7 +241,7 @@ function Sudoku () {
     const difficulties = ['easy', 'medium', 'hard', 'expert'].map((difficulty, index) => {
       return (
         <button className={getDifficultyClass(difficulty) + (solveResults.difficulty === index ? ' difficulty-button-selected' : '')} key={index} onClick={() => changeDifficulty(index)}>
-          {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+          {t('difficulty.buttons.' + difficulty)}
         </button>
       )
     })
@@ -232,7 +249,7 @@ function Sudoku () {
     const difficultiesButtons = () => {
       return (
         <div>
-          <h2 className='select-difficulty-text'>{'Select Difficulty'}</h2>
+          <h2 className='select-difficulty-text'>{t('difficulty.title')}</h2>
           {difficulties}
         </div>
       )
@@ -241,7 +258,7 @@ function Sudoku () {
     const startGameButton = () => {
       return (
         <div className='button-container'>
-          <button className="controls-button" onClick={goToOnGameState}>Start Game!</button>
+          <button className="controls-button" onClick={goToOnGameState}>{t('difficulty.buttons.startGame')}</button>
         </div>
       )
     }
@@ -251,17 +268,7 @@ function Sudoku () {
         <div className="sudoku-nav">
           <h3 className='sudoku-nav-text'>
             {'Sudoku   '}
-            <div className='help'>
-              {InfoCircleFillElement()}
-              <span className="help-no-visible help-game-rules">
-                {'Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions'}
-                <br/>
-                {' Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions'}
-                <br/>
-                {'Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions'}
-
-              </span>
-            </div>
+            { GameRulesInfo() }
           </h3>
         </div>
         <div className="sudoku-main-grid sudoku-configuration">
@@ -272,6 +279,17 @@ function Sudoku () {
           </div>
           <div className='sudoku-blank-side-col'></div>
         </div>
+      </div>
+    )
+  }
+
+  function LoadNewGameComponent () : ReactElement {
+    return (
+      <div className='help'>
+        <button onClick={newGame}>
+          {PlusSquareFillElement()}
+        </button>
+        <span className="help-no-visible help-ui-controls-text">{t('newGame')}</span>
       </div>
     )
   }
@@ -300,17 +318,7 @@ function Sudoku () {
         <div className="sudoku-nav">
           <h3 className='sudoku-nav-text'>
             {'Sudoku   '}
-            <div className='help'>
-              {InfoCircleFillElement()}
-              <span className="help-no-visible help-game-rules">
-                {'Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions'}
-                <br/>
-                {' Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions'}
-                <br/>
-                {'Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions'}
-
-              </span>
-            </div>
+            { GameRulesInfo() }
           </h3>
         </div>
         <div className="sudoku-top-grid">
@@ -329,7 +337,7 @@ function Sudoku () {
                 <button onClick={goToAutomaticallySolveState}>
                   {RobotIconElement()}
                 </button>
-                <span className="help-no-visible help-ui-controls-text">{'Attack board with backtracking'}</span>
+                <span className="help-no-visible help-ui-controls-text">{t('backtracking.help')}</span>
               </div>
             </div>
             <div className='sudoku-ui-controls-icon'>
@@ -337,16 +345,11 @@ function Sudoku () {
                 <button onClick={resetBoard}>
                   {ReplyFillElement()}
                 </button>
-                <span className="help-no-visible help-ui-controls-text">{'Reset current board'}</span>
+                <span className="help-no-visible help-ui-controls-text">{t('resetBoard')}</span>
               </div>
             </div>
             <div className='sudoku-ui-controls-icon'>
-              <div className='help'>
-                <button onClick={newGame}>
-                  {PlusSquareFillElement()}
-                </button>
-                <span className="help-no-visible help-ui-controls-text">{'Start a new game'}</span>
-              </div>
+              { LoadNewGameComponent() }
             </div>
           </div>
           <div className='sudoku-blank-side-col'></div>
@@ -417,7 +420,7 @@ function Sudoku () {
     const SpeedSlider = () => {
       return (
         <div className='speed-slider'>
-          <div className='speed-slider-text' >{'Animation Speed'}</div>
+          <div className='speed-slider-text' >{t('animationSpeed')}</div>
           <input className="speed-slider-input" itemID='speed-slider' onChange={changeAnimationSpeed} type="range" min="0" max="100" id="speedSlider" step={1}/>
         </div>
       )
@@ -440,17 +443,7 @@ function Sudoku () {
         <div className="sudoku-nav">
           <h3 className='sudoku-nav-text'>
             {'Sudoku   '}
-            <div className='help'>
-              {InfoCircleFillElement()}
-              <span className="help-no-visible help-game-rules">
-                {'Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions'}
-                <br/>
-                {' Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions'}
-                <br/>
-                {'Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions'}
-
-              </span>
-            </div>
+            { GameRulesInfo() }
           </h3>
         </div>
         <div className="sudoku-top-grid">
@@ -473,12 +466,7 @@ function Sudoku () {
               <div className='help'>
                 <div className='help-new-game'></div>
               </div>
-              <div className='help'>
-                <button onClick={newGame}>
-                  {PlusSquareFillElement()}
-                </button>
-                <span className="help-no-visible help-ui-controls-text">{'Start a new game'}</span>
-              </div>
+              { LoadNewGameComponent() }
             </div>
           </div>
           <div className='sudoku-blank-side-col'></div>
@@ -517,14 +505,14 @@ function Sudoku () {
     return (
       <div className='leader-board'>
         <header className='leader-board-header'>
-          <h1 className='leader-board-header-text'>Top 10</h1>
+          <h1 className='leader-board-header-text'>{t('leaderBoard.header')}</h1>
         </header>
         <table className='leader-board-table'>
           <thead className='leader-board-thead'>
             <tr className='leader-board-tr'>
-              <th className='leader-board-th position-thead'>{'Pos'}</th>
-              <th className='leader-board-th nickname-thead'>{'Nickname'}</th>
-              <th className='leader-board-th time-thead'>{'Time'}</th>
+              <th className='leader-board-th position-thead'>{t('leaderBoard.positionCol')}</th>
+              <th className='leader-board-th nickname-thead'>{t('leaderBoard.nicknameCol')}</th>
+              <th className='leader-board-th time-thead'>{t('leaderBoard.timeCol')}</th>
             </tr>
           </thead>
           <tbody className='leader-board-tbody'>
@@ -549,7 +537,7 @@ function Sudoku () {
             <div className='sudoku-blank-side-col'></div>
               <div className='sudoku-solving-info'>
                 <div className='sudoku-solving-text'>
-                  {'Success.'}
+                  {t('backtracking.onFinish')}
                 </div>
                 <div className='sudoku-ui-controls-icon'>
                   <div className='help'>
@@ -565,12 +553,7 @@ function Sudoku () {
                 <div className='help'>
                   <div className='help-new-game'></div>
                 </div>
-                <div className='help'>
-                  <button onClick={newGame}>
-                    {PlusSquareFillElement()}
-                  </button>
-                  <span className="help-no-visible help-ui-controls-text">{'Start a new game'}</span>
-                </div>
+                { LoadNewGameComponent() }
               </div>
             </div>
             <div className='sudoku-blank-side-col'></div>
@@ -593,12 +576,7 @@ function Sudoku () {
                 <div className='help'>
                   <div className='help-new-game'></div>
                 </div>
-                <div className='help'>
-                  <button onClick={newGame}>
-                    {PlusSquareFillElement()}
-                  </button>
-                  <span className="help-no-visible help-ui-controls-text">{'Start a new game'}</span>
-                </div>
+                { LoadNewGameComponent() }
               </div>
             </div>
             <div className='sudoku-blank-side-col'></div>
@@ -609,19 +587,19 @@ function Sudoku () {
 
     const ThanksForPlayingElement = () => {
       return (
-        <h3 className='speed-slider-text'>{'Thanks for playing'}</h3>
+        <h3 className='speed-slider-text'>{t('thanksForPlaying')}</h3>
       )
     }
 
     const TopTenCongratsComponent = () => {
       return (
-        <h3 className='top-ten-congrats-text'>{'Congratulations! You made the top 10!'}</h3>
+        <h3 className='top-ten-congrats-text'>{t('leaderBoard.congratulations')}</h3>
       )
     }
 
     const TellToScrollDownComponent = () => {
       return (
-        <h3 className='scroll-down-text '>{'⬇️ Scroll down to see the top 10 ⬇️'}</h3>
+        <h3 className='scroll-down-text '>{t('scrollHelp')}</h3>
       )
     }
 
@@ -670,10 +648,10 @@ function Sudoku () {
       return (
         <div className='sudoku-register-nickname'>
           <div className='sudoku-register-nickname-text'>
-            <h3 className='top-ten-congrats-text'>{'How we should call you?'}</h3>
-            <input className='sudoku-register-nickname-input' onChange={nicknameOnChange} disabled={newTopTenData.posting} value={newTopTenData.nickname} type='text' placeholder='Nickname' />
-            <button className='sudoku-register-nickname-button' disabled={!isAValidNickName() || newTopTenData.posting} onClick={registerNickname}>{'Send'}</button>
-            {!isAValidNickName() && <div className='sudoku-register-nickname-error'>{'Nickname must be between 3 and 20 characters'}</div>}
+            <h3 className='top-ten-congrats-text'>{t('leaderBoard.topTenAware')}</h3>
+            <input className='sudoku-register-nickname-input' onChange={nicknameOnChange} disabled={newTopTenData.posting} value={newTopTenData.nickname} type='text' placeholder={t('leaderBoard.placeHolder')} />
+            <button className='sudoku-register-nickname-button' disabled={!isAValidNickName() || newTopTenData.posting} onClick={registerNickname}>{t('leaderBoard.sendResult')}</button>
+            {!isAValidNickName() && <div className='sudoku-register-nickname-error'>{t('leaderBoard.nicknameError')}</div>}
           </div>
         </div>
       )
@@ -718,17 +696,7 @@ function Sudoku () {
         <div className="sudoku-nav">
           <h3 className='sudoku-nav-text'>
             {'Sudoku   '}
-            <div className='help'>
-              {InfoCircleFillElement()}
-              <span className="help-no-visible help-game-rules">
-                {'Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions'}
-                <br/>
-                {' Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions'}
-                <br/>
-                {'Rule 3 - Each 3x3 box must contain the numbers from 1 to 9, without repetitions'}
-
-              </span>
-            </div>
+            { GameRulesInfo() }
           </h3>
         </div>
         <div className="sudoku-top-grid">

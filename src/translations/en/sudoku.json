@@ -16,9 +16,23 @@
     },
     "backtracking": {
         "help": "Attack board with backtracking",
-        "onAction": "Using Backtracking"
+        "onAction": "Using Backtracking",
+        "onFinish": "Success"
     },
     "resetBoard": "Reset current board",
     "newGame": "Start a new game",
-    "animationSpeed": "Animation Speed"
+    "animationSpeed": "Animation Speed",
+    "scrollHelp": "⬇️ Scroll down to see the top 10 ⬇️",
+    "thanksForPlaying": "Thanks for playing",
+    "leaderBoard": {
+        "topTenAware": "How we should call you?",
+        "congratulations": "Congratulations! You made the top 10!",
+        "sendResult":"Send",
+        "placeHolder": "Nickname",
+        "nicknameError": "Nickname must be between 3 and 20 characters",
+        "header": "TOP TEN",
+        "positionCol": "POS",
+        "nicknameCol": "NICKNAME",
+        "timeCol": "TIME" 
+    }
 }

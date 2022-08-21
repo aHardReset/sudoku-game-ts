@@ -16,9 +16,23 @@
     },
     "backtracking": {
         "help": "Atacar tablero con backtracking",
-        "onAction": "Usando backtracking"
+        "onAction": "Usando backtracking",
+        "onFinish": "Èxito"
     },
     "resetBoard": "Reiniciar el tablero",
     "newGame": "Iniciar nuevo tablero",
-    "animationSpeed": "Velocidad de la animación"
+    "animationSpeed": "Velocidad de la animación",
+    "scrollHelp": "⬇️ Deslízate para ver los mejores 10 ⬇️",
+    "thanksForPlaying": "¡Gracias por jugar!",
+    "leaderBoard": {
+        "topTenAware": "¿Cómo debemos llamarte?",
+        "congratulations": "¡Felicidades! Eres de los mejores 10!",
+        "sendResult":"Enviar",
+        "placeHolder": "Apodo",
+        "nicknameError": "El apodo puede tener de 3 hasta 20 carácteres",
+        "header": "TOP DIEZ",
+        "positionCol": "POS",
+        "nicknameCol": "APODO",
+        "timeCol": "TIEMPO" 
+    }
 }
