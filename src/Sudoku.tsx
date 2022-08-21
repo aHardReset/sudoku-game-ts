@@ -561,7 +561,7 @@ function Sudoku () {
                     <button>
                       {RobotIconElement()}
                     </button>
-                    <span className="help-no-visible help-ui-controls-text">{'Board is solved'}</span>
+                    <span className="help-no-visible help-ui-controls-text">{t('backtracking.onFinishSuccess')}</span>
                   </div>
                 </div>
               </div>

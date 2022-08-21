@@ -23,7 +23,8 @@
         "help": "Resolver tablero con backtracking",
         "onAction": "Usando backtracking",
         "onActionExtend": "Resolviendo tablero con backtracking",
-        "onFinish": "Éxito"
+        "onFinish": "Éxito",
+        "onFinishSuccess": "El tablero ha sido resuelto"
     },
     "resetBoard": "Reiniciar el tablero",
     "newGame": "Iniciar nuevo tablero",

@@ -23,7 +23,8 @@
         "help": "Solve board with backtracking",
         "onAction": "Using Backtracking",
         "onActionExtend": "Solving board with backtracking",
-        "onFinish": "Success"
+        "onFinish": "Success",
+        "onFinishSuccess": "Board is solved"
     },
     "resetBoard": "Reset current board",
     "newGame": "Start a new game",
