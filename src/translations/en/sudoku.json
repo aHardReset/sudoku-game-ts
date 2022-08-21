@@ -1,4 +1,9 @@
 {
+    "share": {
+        "text": "Play Sudoku 🧩 with me! You can use a robot 🤖 to solve the puzzle with a Backtracking algorithm.",
+        "hashtags": "sudoku,backtracking,puzzle,game"
+    },
+    "loading": "Loading...",
     "rules": {
         "rule1": "Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions",
         "rule2": "Rule 2 - Each column must contain the numbers from 1 to 9, without repetitions",

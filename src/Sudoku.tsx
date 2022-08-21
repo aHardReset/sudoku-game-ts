@@ -17,6 +17,7 @@ import RobotIcon from './assets/robot'
 import ReplyFill from './assets/replyFill'
 import PlusSquareFill from './assets/plusSquareFill'
 import InfoCircleFill from './assets/infoCircleFill'
+import ShareFill from './assets/shareFill'
 import type { Step } from './engines/sudokuEngine'
 
 const minAnimationSpeed = 1000
@@ -112,7 +113,7 @@ function Sudoku () {
   function onLoadingState (): ReactElement {
     return (
       <div>
-        <LoadingElement text="Loading..." />
+        <LoadingElement text={t('loading')} />
       </div>
     )
   }
@@ -184,6 +185,12 @@ function Sudoku () {
     )
   }
 
+  function ShareFillElement (): ReactElement {
+    return (
+      <ShareFill className='icon share-fill-icon' />
+    )
+  }
+
   function PlusSquareFillElement (): ReactElement {
     return (
       <PlusSquareFill className='icon trash-fill-icon' />
@@ -207,6 +214,31 @@ function Sudoku () {
           <br/>
           {t('rules.rule3')}
         </span>
+      </div>
+    )
+  }
+
+  function SudokuNavbar (): ReactElement {
+    const shareButton = () => {
+      // share webpage in twitter with app or website link
+      const url = window.location.href
+      const text = t('share.text')
+      const hashtags = t('share.hashtags')
+      const shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`
+      // window open noreferrer
+      window.open(shareUrl, '_blank', 'noreferrer')
+    }
+    return (
+      <div className="sudoku-nav">
+        <div>
+          <h3 className='sudoku-nav-text'>{'Sudoku   '}</h3>
+        </div>
+        <div>
+          { GameRulesInfo() }
+        </div>
+        <div className='sudoku-share' onClick={shareButton}>
+          { ShareFillElement() }
+        </div>
       </div>
     )
   }
@@ -265,12 +297,7 @@ function Sudoku () {
 
     return (
       <div className="sudoku-screen">
-        <div className="sudoku-nav">
-          <h3 className='sudoku-nav-text'>
-            {'Sudoku   '}
-            { GameRulesInfo() }
-          </h3>
-        </div>
+        { SudokuNavbar() }
         <div className="sudoku-main-grid sudoku-configuration">
           <div className='sudoku-blank-side-col'></div>
           <div className='sudoku-board'>
@@ -315,12 +342,7 @@ function Sudoku () {
 
     return (
       <div className="sudoku-screen">
-        <div className="sudoku-nav">
-          <h3 className='sudoku-nav-text'>
-            {'Sudoku   '}
-            { GameRulesInfo() }
-          </h3>
-        </div>
+        { SudokuNavbar() }
         <div className="sudoku-top-grid">
           <div className='sudoku-blank-side-col'></div>
           <div className='sudoku-timer-item'>
@@ -440,12 +462,7 @@ function Sudoku () {
 
     return (
       <div className="sudoku-screen">
-        <div className="sudoku-nav">
-          <h3 className='sudoku-nav-text'>
-            {'Sudoku   '}
-            { GameRulesInfo() }
-          </h3>
-        </div>
+        { SudokuNavbar() }
         <div className="sudoku-top-grid">
           <div className='sudoku-blank-side-col'></div>
           <div className='sudoku-solving-info'>
@@ -663,7 +680,7 @@ function Sudoku () {
           return (
             <div className='ui-bottom-elements'>
               {ThanksForPlayingElement()}
-              <h3 className='sudoku-loading-leader-board'>{'Loading'}</h3>
+              <h3 className='sudoku-loading-leader-board'>{t('loading')}</h3>
             </div>
           )
         }
@@ -693,12 +710,7 @@ function Sudoku () {
 
     return (
       <div className="sudoku-screen">
-        <div className="sudoku-nav">
-          <h3 className='sudoku-nav-text'>
-            {'Sudoku   '}
-            { GameRulesInfo() }
-          </h3>
-        </div>
+        { SudokuNavbar() }
         <div className="sudoku-top-grid">
           {UiTopElements()}
         </div>

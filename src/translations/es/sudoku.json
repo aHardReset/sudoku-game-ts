@@ -1,8 +1,13 @@
 {
+    "share": {
+        "text": "¡Juega Sudoku 🧩 conmigo! Puedes usar un robot 🤖 para resolver el puzzle con un algoritmo de Backtracking.",
+        "hashtags": "sudoku,backtracking,puzzle,juego"
+    },
+    "loading": "Cargando...",
     "rules": {
-        "rule1": "Rule 1 - Cada fila debe contener los números del 1 al 9 sin repetirse",
-        "rule2": "Rule 2 - Cada columba debe contener los números del 1 al 9 sin repetirse",
-        "rule3": "Rule 3 - Cada cuadro limitado de 3x3 debe tener los números del 1 al 9 sin repetirse"
+        "rule1": "Regla No. 1 - Cada fila debe contener los números del 1 al 9 sin repetirse",
+        "rule2": "Regla No. 2 - Cada columba debe contener los números del 1 al 9 sin repetirse",
+        "rule3": "Regla No. 3 - Cada cuadro limitado de 3x3 debe tener los números del 1 al 9 sin repetirse"
     },
     "difficulty": {
         "buttons": {

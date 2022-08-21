@@ -114,26 +114,40 @@
   background-color: #333;
 }
 
-.sudoku-nav{
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  color: aliceblue;
-  height: 6vh;
-}
-
-.sudoku-nav-text{
-  margin: 1vh 1vh;
-  font-size: 3vh;
-  text-align: center;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
-
 .sudoku-top-grid {
   display: grid;
   grid-template-columns: 1fr 4fr 4fr 1fr;
   height: 16vh;
 }
+
+.sudoku-nav{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 6vh;
+}
+
+.sudoku-nav-text{
+  color: aliceblue;
+  margin-right: 1vw;
+  font-size: 4vh;
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.sudoku-share{
+  margin-left: 3vw;
+}
+
+.sudoku-share:hover{
+  cursor: pointer;
+}
+
+
 
 .sudoku-timer-item{
   display: flex;
@@ -494,6 +508,13 @@ input[type=number] {
   fill: aqua;
   width: 4vh;
   height: 4vh;
+  -webkit-filter: drop-shadow(0px 0px 5px tomato);
+}
+
+.share-fill-icon {
+  fill: aqua;
+  width: 3vh;
+  height: 3vh;
   -webkit-filter: drop-shadow(0px 0px 5px tomato);
 }
 
